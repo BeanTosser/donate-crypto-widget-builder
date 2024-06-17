@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="./css/main.css" />
+        <script type="text/javascript" src="index.js"></script>
+    </head>
+    <body onload="initialize()">
+        <div class="test-thing">
+            &nbsp;
+        </div>
+        <div class="donate-crypto-widget">
+            <div class="coin-chooser">
+                <div class="left-arrow change-coin-arrow" onclick="clickLeft()"></div>
+                <div class="arrow-divider"></div>
+                <div id="coins-container">
+                    <img class="coin-logo" alt="coin 1" onclick="toggleAddressDisplay()"/>
+                    <img class="coin-logo" alt="coin 2" onclick="toggleAddressDisplay()"/>
+                </div>
+                <div class="right-arrow change-coin-arrow" onclick="clickRight()"></div>
+            </div>
+            <div id="address-display" class="hidden">
+                <input type="text" id="address-text" class="address-display" onclick = "copyAddress()" readonly />
+                <img src="./img/qr.png" alt="qr" id="qr" class="address-display"/>
+            </div>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,10 @@
+declare module "*.png";
+declare module "*.svg";
+declare module "*.jpeg";
+declare module "*.jpg";
+declare module "base64-to-binary";
+declare module "html-loader";
+declare module "*.html";
+declare module "*?raw";
+declare module "*.css";
+declare module "*.test";

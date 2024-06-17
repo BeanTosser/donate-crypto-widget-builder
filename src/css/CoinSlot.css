@@ -1,0 +1,4 @@
+.address-entry.invalid-address{
+    color: red;
+    border: 1px solid red;
+}
