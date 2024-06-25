@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/donate-crypto-widget-builder/static/css/main.5c8aac62.css",
+    "main.js": "/donate-crypto-widget-builder/static/js/main.fef0012f.js",
+    "static/js/845.8481edf4.chunk.js": "/donate-crypto-widget-builder/static/js/845.8481edf4.chunk.js",
+    "static/media/index.txt?raw": "/donate-crypto-widget-builder/static/media/index.697b2aa29cdfc503f2e3.txt",
+    "index.html": "/donate-crypto-widget-builder/index.html",
+    "main.5c8aac62.css.map": "/donate-crypto-widget-builder/static/css/main.5c8aac62.css.map",
+    "main.fef0012f.js.map": "/donate-crypto-widget-builder/static/js/main.fef0012f.js.map",
+    "845.8481edf4.chunk.js.map": "/donate-crypto-widget-builder/static/js/845.8481edf4.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.5c8aac62.css",
+    "static/js/main.fef0012f.js"
+  ]
+}
