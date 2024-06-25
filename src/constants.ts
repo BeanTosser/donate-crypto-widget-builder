@@ -5,3 +5,5 @@ export const SUPPORTED_COINS = [
     "doge",
     "eth"
 ]
+
+export const ADDRESS_LINE_CHARS = 15;

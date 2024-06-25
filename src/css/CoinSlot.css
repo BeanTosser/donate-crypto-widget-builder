@@ -1,4 +1,105 @@
-.address-entry.invalid-address{
+:root{
+    --coin-slot-width: 8em;
+}
+
+input.remove-button{
+    position: absolute;
+    left: 0.2em;
+    top: 0.2em;
+}
+
+.dropdown-menu{
+    height: 1.6em;
+}
+
+.coin-slot{
+    width: var(--coin-slot-width);
+    margin: 1em auto;
+    border: 1px solid black;
+    padding: 0.6em;
+    padding-top: 1.7em;
+    position: relative;
+}
+
+.address-entry-container{
+    display: flex;
+    flex-direction: column;
+}
+
+.closed{
+    display: none;
+}
+
+.address-entry-label::before{
+    width: 0; 
+    height: 0; 
+    border-left: 1px solid transparent;
+    border-right: 1px solid transparent;
+    
+    border-bottom: 1px solid black;
+}
+
+.coin-image{
+    width: 2.5em;
+    transform: translateY(-1em);
+}
+
+.arrow {
+    border: solid black;
+    border-width: 0 3px 3px 0;
+    display: inline-block;
+    padding: 4px;
+    margin: 5px;
+    content: " ";
+}
+
+.address-label-area{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.down{
+    transform:rotate(45deg);
+    content: " ";
+}
+.right{
+    transform:rotate(-45deg);
+    content: " ";
+}
+
+textarea{
+    resize: none;
+}
+
+.invalid-address{
     color: red;
-    border: 1px solid red;
+    border: 3px solid red;
+}
+
+.address-entry-label:hover{
+    cursor:pointer;
+}
+
+.select-area{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+span{
+    resize: none;
+    outline: none;
+    min-height: 20px;
+    line-height: 20px;
+    padding: 8px 8px 4px 8px;
+    border: 1px solid #708090;
+    display: inline-block;
+    width: 15em;
+}
+
+span:before {
+    content: attr(value);
+    color: #aaa; 
 }

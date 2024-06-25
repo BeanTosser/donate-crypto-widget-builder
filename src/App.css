@@ -3,7 +3,11 @@
 }
 
 .app-box{
-  border: 1px solid red;
+  border: 1px solid rgb(0, 0, 0);
+  max-width: 45em;
+  margin: 0 auto;
+  padding-left: 1.5em;
+  padding-right: 1.5em;
 }
 
 .App-logo {
@@ -39,4 +43,13 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+
+
+.coin-list{
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(max(8em, 10em), 1fr));
+  gap: 0.25em;
 }

@@ -4,7 +4,6 @@ let acceptedCoins = instructions.map((coin, index) => {
     return coin.ticker;
 });
 
-let instructions = "";
 let coinsContainer;
 let currentCoinIndex = 0;
 let currentCoinShift = 0;

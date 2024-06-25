@@ -1,5 +1,5 @@
-import React from "react";
-import {SUPPORTED_COINS, ADDRESS_LINE_CHARS} from "../constants";
+import React, {MouseEventHandler} from "react";
+import {SUPPORTED_COINS} from "../constants";
 import "../css/CoinSlot.css";
 
 
@@ -30,8 +30,7 @@ interface RequiredCoinSlotProps{
     onChangeCoin: (id: number, coin: string) => void,
     onChangeAddress: (id: number, address: string, ticker: string) => void,
     onRemoveCoinSlot: (id: number) => void,
-    toggleAddressEntryArea: (id: number) => void,
-    lines: number
+    toggleAddressEntryArea: (id: number) => void
 }
 
 interface CoinSlotProps extends OptionalCoinSlotProps, RequiredCoinSlotProps {};
@@ -96,13 +95,14 @@ let addressEntryElement = (
         onChange={onChangeAddress}
         // @ts-ignore
         value={props.address}
-        rows={props.lines}
-        cols={ADDRESS_LINE_CHARS}
     >
     </textarea>
 )
+console.log("testElement scrollheight: " + JSON.stringify(addressEntryElement.scroll));
+let tester = document.createElement("textarea");
+tester.heigh
 
-console.log("Does this coin have a valid address? " + props.addressIsValid);
+
 
 // @ts-ignore
     return(
