@@ -37,7 +37,7 @@ export default async function WriteHtml(tickers: string[], addresses: string[], 
         // get the image file path
         let filePath = "/src/img/" + ticker + "ButtonLogo.png";
         let imageData = imageSources[index];
-
+        console.log("The filepath: " + filePath);
         let binaryImageData = dataURItoBlob(imageData);
         zip.file(filePath, binaryImageData, {binary: true});
 

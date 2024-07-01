@@ -3,7 +3,7 @@ import CoinSlot from "./components/CoinSlot";
 import {SUPPORTED_COINS} from "./constants";
 import './App.css';
 import generateQrs from './WriteHtml';
-import {ADDRESS_LINE_CHARS} from './constants';
+import {ADDRESS_LINE_CHARS, COIN_TEST_ADDRESSES} from './constants';
 
 import btcImage from './img/btcButtonLogo.png';
 import xmrImage from './img/xmrButtonLogo.png';
@@ -78,8 +78,8 @@ function App() {
 
   const checkIfAddressesAreValid = function(){
     console.log("Running checkIfAddressesAreValid");
-    for(let i = 0; i < coinsData.length; i++){
-      if(!coinsData[i].addressIsValid) {
+    for(let i = 0; i < coinsDataCopy.length; i++){
+      if(!coinsDataCopy[i].addressIsValid) {
         console.log("FOund a coin that does NOT HAVE a valid address")
         return false;
       }
@@ -92,19 +92,23 @@ function App() {
     // ID is the index of the coin in the existing coin slot array
     // coin is the index of the new coin/ticker to switch to in SUPPORTED_COINS
 
-    let coinRank = SUPPORTED_COINS.indexOf(coin);
+    console.log("AVCoins: removing " + SUPPORTED_COINS[SUPPORTED_COINS.indexOf(coin)]);
+    console.log("AVCoins: adding " + SUPPORTED_COINS[coinsDataCopy[id].rank]);
 
-    coinsDataCopy[id].ticker = SUPPORTED_COINS[coinRank];
+    let newCoinRank = SUPPORTED_COINS.indexOf(coin);
+    let oldCoinRank = coinsDataCopy[id].rank;
+    console.log("Switching coin from " + SUPPORTED_COINS[oldCoinRank] + " to " + SUPPORTED_COINS[newCoinRank]);
+    coinsDataCopy[id].ticker = SUPPORTED_COINS[newCoinRank];
     coinsDataCopy[id].addressIsValid = false;
-    coinsDataCopy[id].image = SUPPORTED_COIN_IMAGES[coinRank];
+    coinsDataCopy[id].image = SUPPORTED_COIN_IMAGES[newCoinRank];
 
     // Need to 
     // 1. Find the index of the current coin in the available coins array
     //   1a. array[array.indexOf(rank)] = coin
     // 2. swap out the value of the element at that index with "coin"
-    let newCoinRank = SUPPORTED_COINS.indexOf(coin);
-    availableCoinsCopy[availableCoins.indexOf(newCoinRank)] = coinsDataCopy[id].rank;
-    coinsDataCopy[id].rank = coinRank;
+    availableCoinsCopy[availableCoinsCopy.indexOf(newCoinRank)] = coinsDataCopy[id].rank;
+    coinsDataCopy[id].rank = newCoinRank;
+
     update();
   }
 
@@ -136,9 +140,12 @@ function App() {
   */
 
   const onRemoveCoinSlot = function(id: number){
+    
     if(coinsData.length > 1){
       console.log("Removing coin");
-      availableCoinsCopy.push(SUPPORTED_COINS.indexOf(coinsDataCopy[id].ticker))
+      let newAvailableCoin = SUPPORTED_COINS.indexOf(coinsDataCopy[id].ticker);
+      console.log("AVCoins: adding " + SUPPORTED_COINS[coinsDataCopy[id].rank]);
+      availableCoinsCopy.push(newAvailableCoin);
       coinsDataCopy.splice(id, 1);
       update();
     }
@@ -175,10 +182,17 @@ function App() {
         rank: coinsData.length
       } as CoinData
     )
+    console.log("AVCoins: removing " + SUPPORTED_COINS[availableCoinsCopy[0]]);
+    
     availableCoinsCopy = availableCoins.slice(1);
-    console.log("Available coins before adding a new one: " + JSON.stringify(availableCoins));
-    console.log("Available coins after adding a new one: " + JSON.stringify(availableCoinsCopy));
-    console.log("Joppy: Length of coinsDataCopy after adding a coin: " + coinsDataCopy.length);
+    update();
+  }
+
+  const makeAllAddressesValid = function() {
+    coinsDataCopy.forEach((coin, index) => {
+      coin.address = COIN_TEST_ADDRESSES[SUPPORTED_COINS.indexOf(coin.ticker)];
+      coin.addressIsValid = true;
+    })
     update();
   }
 
@@ -203,6 +217,7 @@ function App() {
           </div>
         </div>
         <button onClick={onGenerateQrs} value="Get widget" disabled={generationIsDisabled}>Get widget</button>
+        <button onClick={makeAllAddressesValid} value="Make addresses valid (for testing)">Make Addresses Valid</button>
       </div>
     </div>
   );

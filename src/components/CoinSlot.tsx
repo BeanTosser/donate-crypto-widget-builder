@@ -107,8 +107,8 @@ console.log("Does this coin have a valid address? " + props.addressIsValid);
 // @ts-ignore
     return(
         <div className="coin-slot">
-            <input type="button" className="remove-button" onClick = {onRemoveCoinSlot} value="X"></input>
             <div className="select-area">
+                <input type="button" className="remove-button" onClick = {onRemoveCoinSlot} value="X"></input>
                 <select value={props.coinTicker || ""} className = "dropdown-menu" onChange={onChangeCoin}>
                     {coinOptions}
                 </select>
