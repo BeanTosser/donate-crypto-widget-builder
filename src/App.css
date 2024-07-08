@@ -45,7 +45,9 @@
   }
 }
 
-
+.hidden{
+  display: none;
+}
 
 .coin-list{
   margin: 0 auto;

@@ -1,6 +1,7 @@
 import React from "react";
 import {SUPPORTED_COINS, ADDRESS_LINE_CHARS} from "../constants";
 import "../css/CoinSlot.css";
+import "../index.css";
 
 
 /*
@@ -16,8 +17,8 @@ const AddButton = function (props: AddButtonProps) {
 */
 
 interface OptionalCoinSlotProps{
-    coinImage?: JSX.Element,
     address?: string,
+    customTicker?: string
 }
 
 interface RequiredCoinSlotProps{
@@ -27,9 +28,12 @@ interface RequiredCoinSlotProps{
     availableCoins: number[],
     addressIsValid: boolean,
     isCustom: boolean,
+    coinImage: JSX.Element,
     onChangeCoin: (id: number, coin: string) => void,
     onChangeAddress: (id: number, address: string, ticker: string) => void,
     onRemoveCoinSlot: (id: number) => void,
+    onChangeLogo: (id: number, event: React.ChangeEvent<HTMLInputElement>) => void,
+    onChangeTicker: (id: number, ticker: string) => void,
     toggleAddressEntryArea: (id: number) => void,
     lines: number
 }
@@ -40,11 +44,25 @@ const CoinSlot = function(props: CoinSlotProps){
     console.log("coin image: " + props.coinImage);
     let coinOptions: JSX.Element[];
 
+
+    let coinsToList: number[];
+    if(props.isCustom){
+        coinsToList = props.availableCoins.slice(0, props.availableCoins.length - 1);
+    } else {
+        coinsToList = props.availableCoins;
+    }
+    console.log("Coins to list before: " + JSON.stringify(props.availableCoins));
+    console.log("Coins to list after: " + JSON.stringify(coinsToList))
+
     coinOptions = [
         <option value={props.coinTicker}>{props.coinTicker}</option>
     ]
-    coinOptions = [...coinOptions, ...props.availableCoins.map((ticker) => {
-        console.log("select ticker: " + ticker);
+    coinOptions = [...coinOptions, ...coinsToList.map((ticker) => {
+        if(ticker === -1){
+            return(
+                <option value="custom">custom</option>
+            )
+        }
         return(
             <option value={SUPPORTED_COINS[ticker]}>{SUPPORTED_COINS[ticker]}</option>
         )
@@ -63,13 +81,20 @@ const CoinSlot = function(props: CoinSlotProps){
         props.onChangeAddress(props.id, event.target.value, props.coinTicker);
     }
 
+    const onChangeLogo = function(event: React.ChangeEvent<HTMLInputElement>){
+        console.log("the new image: " + event.target.value);
+        props.onChangeLogo(props.id, event);
+    }
+
+    const onChangeTicker= function(event: React.ChangeEvent<HTMLInputElement>){
+        props.onChangeTicker(props.id, event.target.value);
+    }
+
     console.log("Address is valid: " + props.addressIsValid.toString());
 
     const onRemoveCoinSlot = function(){
         props.onRemoveCoinSlot(props.id)
     }
-
-    console.log("AddressEntryIsOpen? " + props.addressEntryIsOpen)
 
     let addressEntryOpenClassName = "address-entry-container";
     if(!props.addressEntryIsOpen){
@@ -104,6 +129,14 @@ let addressEntryElement = (
 
 console.log("Does this coin have a valid address? " + props.addressIsValid);
 
+let customCoinOptionsClassName = "hidden";
+
+if(props.isCustom){
+    customCoinOptionsClassName = "custom";
+} 
+
+console.log("file input classname at render: " + "logo-chooser-" + props.id.toString());
+
 // @ts-ignore
     return(
         <div className="coin-slot">
@@ -124,6 +157,10 @@ console.log("Does this coin have a valid address? " + props.addressIsValid);
                 {addressEntryElement}
 
                 </div>
+            </div>
+            <div className={customCoinOptionsClassName}>
+                <input type="text" onChange={onChangeTicker} value={props.customTicker}></input>
+                <input type="file" id={"logo-chooser-" + props.id.toString()} onChange={onChangeLogo}></input>
             </div>
         </div>
     )
