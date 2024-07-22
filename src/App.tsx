@@ -13,6 +13,8 @@ import ethImage from './img/ethButtonLogo.png';
 import EMPTY_COIN_IMAGE from './img/emptyButtonLogo.png';
 import validator from "multicoin-address-validator";
 
+console.log("Class of the image file: " + btcImage);
+
 let coinImageSources = [
   btcImage,
   xmrImage,
@@ -37,6 +39,7 @@ type CoinData = {
   customTicker: string,
   addressIsValid: boolean,
   image: JSX.Element,
+  imageSource: string,
   addressEntryIsOpen: boolean,
   rank: number,
   lines: number
@@ -63,6 +66,7 @@ function App() {
       customTicker: "",
       addressIsValid: false,
       image: SUPPORTED_COIN_IMAGES[0],
+      imageSource: SUPPORTED_COIN_IMAGES[0].props.src,
       rank: 0,
       addressEntryIsOpen: false,
     } as CoinData
@@ -70,11 +74,20 @@ function App() {
   let coinsDataCopy = [...coinsData];
   let availableCoinsCopy = [...availableCoins];
 
-  const onChangeLogo = function(id: number, event: React.ChangeEvent<HTMLInputElement>){
+  const onChangeLogo = async function(id: number, event: React.ChangeEvent<HTMLInputElement>){
     // Get the file from the file input element
-    coinsDataCopy[id].image = <img src={URL.createObjectURL(event.target.files[0])} alt="btc logo" className="coin-image"></img>
-    console.log("The newly created image: " + JSON.stringify(coinsDataCopy[id].image));
-    update();
+    const reader = new FileReader();
+    reader.onloadend = () => {
+        let imageSource = reader.result;
+        if(typeof imageSource === "string"){
+          coinsDataCopy[id].image = <img src={imageSource} alt="btc logo" className="coin-image"></img>
+          coinsDataCopy[id].imageSource = imageSource;
+          console.log("The newly created image: " + JSON.stringify(coinsDataCopy[id].image));
+          update();
+        }
+    };
+    await reader.readAsDataURL(event.target.files[0]);
+
   }
 
   const onChangeTicker = function(id: number, ticker: string){
@@ -83,7 +96,7 @@ function App() {
   }
 
   const onGenerateQrs = function(){
-    generateQrs(coinsData.map(coin => {return coin.customTicker}), coinsData.map(coin => {return coin.address}), coinsData.map(coin => {return coinImageSources[coin.rank]}));
+    generateQrs(coinsData.map(coin => {return coin.customTicker}), coinsData.map(coin => {return coin.address}), coinsData.map(coin => {return coin.imageSource}));
   }
 
   const onToggleAddressEntry = function(id: number){
@@ -103,37 +116,81 @@ function App() {
     return true;
   }
 
+  const makeCoinAvailable = function(oldCoinRank: number){
+    if(oldCoinRank !== -1){
+      for(let index=0; index < availableCoinsCopy.length; index++) {
+        let availableCoinRank = availableCoinsCopy[index];
+        console.log("shippy: The index is " + index + ", and the current available coin rank is " + availableCoinRank);
+        console.log("Shippy: the available coin array as a whole is " + JSON.stringify(availableCoinsCopy))
+        if(availableCoinRank === -1){
+          console.log("Shippy: making coin " + SUPPORTED_COINS[oldCoinRank] + " available at the end of the coins array, which is index " + index);
+          availableCoinsCopy.splice(index, 0, oldCoinRank);
+          return;
+        } else if(availableCoinRank > oldCoinRank){
+          console.log("shippy; " + "inserting " + oldCoinRank + " below " + availableCoinRank);
+          if(index === 0){
+            //insert the coin at the beginning of the array)
+            console.log("Shippy: The coin at " + index + " has a higher rank (" + availableCoinRank + ") than the old coin, whose rank is " + oldCoinRank + "... Therefore...");
+            console.log("shippy: availableCoins before the unshift: " + JSON.stringify(availableCoinsCopy));
+            availableCoinsCopy.unshift(oldCoinRank);
+            console.log("shippy: availableCoins after the unshift: " + JSON.stringify(availableCoinsCopy));
+            console.log("Shippy: making coin " + SUPPORTED_COINS[oldCoinRank] + " available at the beginining of the available coins array");
+            return;
+          } else {
+            //insert the coin before the current availableCoin
+            availableCoinsCopy.splice(index, 0, oldCoinRank);
+            console.log("Shippy: making coin " + SUPPORTED_COINS[oldCoinRank] + " available in slot " + (index));
+            return;
+          }
+        }
+      }
+    }
+    return;
+  }
+
   const onChangeCoin = function(id: number, coin: string){
+    console.log("shippy: available coins before change: " + JSON.stringify(availableCoinsCopy));
     // ID is the index of the coin in the existing coin slot array
     // coin is the index of the new coin/ticker to switch to in SUPPORTED_COINS
-    console.log("The coin to changed to: " + coin);
+    let oldCoinRank = coinsDataCopy[id].rank;
+    let newCoinRank: number;
 
-    console.log("AVCoins: removing " + SUPPORTED_COINS[SUPPORTED_COINS.indexOf(coin)]);
-    console.log("AVCoins: adding " + SUPPORTED_COINS[coinsDataCopy[id].rank]);
-
-    // First, see if this slot is now a custom currency
-    let oldCoinRank, newCoinRank: number;
-    oldCoinRank = coinsDataCopy[id].rank;
-
-    if(coin !== "custom"){
+    if(coin === "custom"){
+      newCoinRank = -1;
+    } else {
       newCoinRank = SUPPORTED_COINS.indexOf(coin);
-      console.log("Switching coin from " + SUPPORTED_COINS[oldCoinRank] + " to " + SUPPORTED_COINS[newCoinRank]);
+    }
+
+    //First, remove the NEW coin from availableCoins (if not custom)
+
+    console.log("Shippy: new coin rank is " + newCoinRank);
+    if(newCoinRank !== -1){
+      availableCoinsCopy.splice(availableCoins.indexOf(newCoinRank), 1);
+      console.log("Shippy: removing the new coin from availableCoins; that coin we are removing is " + SUPPORTED_COINS[newCoinRank])
+    } else {
+      console.log("Shippy: NOT REMOVING the new coin from availableCoins");
+    }
+
+    makeCoinAvailable(oldCoinRank);
+
+    // replace the old coin with the new in the coin slot
+    if(newCoinRank !== -1){
       coinsDataCopy[id].ticker = SUPPORTED_COINS[newCoinRank];
       coinsDataCopy[id].customTicker = SUPPORTED_COINS[newCoinRank];
       coinsDataCopy[id].addressIsValid = false;
       coinsDataCopy[id].image = SUPPORTED_COIN_IMAGES[newCoinRank];
-      availableCoinsCopy[availableCoinsCopy.indexOf(newCoinRank)] = oldCoinRank;
+      //availableCoinsCopy[availableCoinsCopy.indexOf(newCoinRank)] = oldCoinRank;
     } else {
       newCoinRank = -1;
       coinsDataCopy[id].ticker = "custom";
       coinsDataCopy[id].customTicker = "TKR";
       coinsDataCopy[id].addressIsValid = true;
       coinsDataCopy[id].image = EMPTY_COIN_IMAGE_ELEMENT;
-      availableCoinsCopy = [...[oldCoinRank], ...availableCoinsCopy];
+      //availableCoinsCopy = [...[oldCoinRank], ...availableCoinsCopy];
     }
 
     coinsDataCopy[id].rank = newCoinRank;
-
+    console.log("shippy: available coins after change: " + JSON.stringify(availableCoinsCopy));
     update();
   }
 
@@ -163,17 +220,11 @@ function App() {
   */
 
   const onRemoveCoinSlot = function(id: number){
-    
-    if(coinsDataCopy.length > 1){
-      if(coinsDataCopy[id].rank !== -1){
-        console.log("Removing coin");
-        let newAvailableCoin = SUPPORTED_COINS.indexOf(coinsDataCopy[id].ticker);
-        console.log("AVCoins: adding " + SUPPORTED_COINS[coinsDataCopy[id].rank]);
-        availableCoinsCopy.push(newAvailableCoin);
-      }
-      coinsDataCopy.splice(id, 1);
-      update();
-    }
+    console.log("Pappyer: ID of the coin to make available: " + id);
+    console.log("Pappyer: Rank of the coin to make available: " + coinsDataCopy[id].rank);
+    makeCoinAvailable(coinsDataCopy[id].rank);
+    coinsDataCopy.splice(id, 1);
+    update();
   }
 
   let coinList = coinsData.map((coin, index) => {
@@ -203,17 +254,19 @@ function App() {
     let coinRank: number;
 
     if(availableCoinsCopy.length === 1){
-      //This coin only be a custom coin
+      //This can only be a custom coin
       coinRank = -1;
     } else {
-      coinRank = coinsDataCopy.length;
+      coinRank = availableCoinsCopy[0];
+      //Remove this coin from the list of available coins
+      availableCoinsCopy = availableCoins.slice(1);
     }
 
     let newTicker: string;
     let newImage: JSX.Element;
     if(coinRank !== -1){
-      newTicker = SUPPORTED_COINS[availableCoins[0]];
-      newImage = SUPPORTED_COIN_IMAGES[availableCoins[0]];
+      newTicker = SUPPORTED_COINS[coinRank];
+      newImage = SUPPORTED_COIN_IMAGES[coinRank];
     } else {
       newTicker = "custom";
       newImage = EMPTY_COIN_IMAGE_ELEMENT;
@@ -226,15 +279,11 @@ function App() {
         customTicker: newTicker,
         addressIsValid: coinRank === -1 ? true : false,
         image: newImage,
+        imageSource: newImage.props.src,
         rank: coinRank
       } as CoinData
     )
-    
-    // Only want to remove the coin from "available coins" if not custom.
-    if(coinRank !== -1){
-      console.log("AVCoins: removing " + SUPPORTED_COINS[availableCoinsCopy[0]]);
-      availableCoinsCopy = availableCoins.slice(1);
-    }
+
     update();
   }
 
@@ -258,6 +307,10 @@ function App() {
   return (
 
     <div className="App">
+      <div className="debug">
+        Supported: {SUPPORTED_COINS.join(", ")} <br/>
+        Available: {availableCoins.map(coin => {return <>{coin} </>})}
+      </div>
       <div className="app-box">
         <h1>Build your cryptocurrency donation widget</h1>
         <div className="coin-list-container">

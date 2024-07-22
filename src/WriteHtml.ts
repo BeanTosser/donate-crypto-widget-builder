@@ -34,36 +34,47 @@ export default async function WriteHtml(tickers: string[], addresses: string[], 
     // [tickern],[addressn];
 
     tickers.forEach(async (ticker, index) => {
+        console.log("Looping through tickers; now on " + ticker);
         // get the image file path
         let filePath = "/src/img/" + ticker + "ButtonLogo.png";
         let imageData = imageSources[index];
-        console.log("The filepath: " + filePath);
-        let binaryImageData = dataURItoBlob(imageData);
+        console.log("The image source for " + ticker + "is: " + imageData);
+        let binaryImageData: Blob;
+        try{
+            binaryImageData = dataURItoBlob(imageData);
+        } catch(e){
+            console.log("dataUriToBlob failed because: " + e);
+        }
         zip.file(filePath, binaryImageData, {binary: true});
 
-        let address = addresses[index];
-        
+        let address = addresses[index] || "";
+        console.log("The breakpoint");
         //QRCode
-
         let qr = qrcode(0, 'M');
-        qr.addData(address);
-        qr.make();
-        let qrURL = qr.createDataURL(6);
-        let qrBinary = dataURItoBlob(qrURL);
-        zip.file("/src/img/qr" + index.toString() + ".png", qrBinary, {binary: true});
-
+        if(address){
+            qr.addData(address);
+            qr.make();
+            let qrURL = qr.createDataURL(6);
+            let qrBinary = dataURItoBlob(qrURL);
+            zip.file("/src/img/qr" + index.toString() + ".png", qrBinary, {binary: true});
+        }
         instructions.push({address: address, ticker: ticker})
     })
+    console.log("Supposedly done looping tickers");
     let instructionsString = JSON.stringify({instructions});
     //instructionsString = instructionsString.substring(instructionsString.indexOf("["), instructionsString.indexOf("]") + 1);
     instructionsString = instructionsString.replace('{"instructions":', "let instructions = ");
     instructionsString = instructionsString.replace('}]}', '}]')
-    console.log("The instructions: " + instructionsString);
-    console.log("indexjs: " + indexJs);
     // Add the instructions to the top of indexJs
-    let newIndexJs = indexJs.substring(indexJs.indexOf("<!--") + 4, indexJs.length - 4);
+    console.log("indexJs length? " + indexJs.length);
+    let newIndexJs: string;
+    try {
+        newIndexJs = indexJs.substring(indexJs.indexOf("<!--") + 4, indexJs.length - 4);
+    } catch(e){
+        console.log("found the failing length line. Reason for failure: " + e)
+    }
+    console.log("SUccessfully created newIndexJs")
     newIndexJs = instructionsString.concat("\n", newIndexJs);
-    console.log("newIndexJs: " + newIndexJs);
     zip.file("/src/index.js", newIndexJs);
     zip.generateAsync({type: 'blob'}).then(function(content) {
         filesaver.saveAs(content, "cryptoWidget");

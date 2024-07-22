@@ -142,6 +142,10 @@ function clickRight(){
             coins[1].style.opacity = 1.0;
         }
     }, 10)
+
+    console.log("currentCoinIndex: " + currentCoinIndex);
+    console.log("oldCoinIndex: " + oldCoinIndex);
+
     resetAddressAndQr();
     
 }
@@ -149,7 +153,7 @@ function clickRight(){
 function clickLeft(){
     let oldCoinIndex = currentCoinIndex;
     if(currentCoinIndex === 0){
-        currentCoinIndex = coins.length - 1;
+        currentCoinIndex = coinImages.length - 1;
     } else {
         currentCoinIndex--;
     }
@@ -175,6 +179,8 @@ function clickLeft(){
             coinsContainer.style.transform = "translateX( " + INITIAL_COIN_CONTAINER_POSITION_X + ")";
         }
     },10)
+    console.log("currentCoinIndex: " + currentCoinIndex);
+    console.log("oldCoinIndex: " + oldCoinIndex);
     resetAddressAndQr();
 }
 

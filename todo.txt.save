@@ -1,1 +1,2 @@
-* allow custom coins
+* keep available_coins order fixed and pegged to SUPPORTED_COINS
+* 
