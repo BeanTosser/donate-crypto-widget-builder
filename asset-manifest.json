@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/donate-crypto-widget-builder/static/css/main.fba7385f.css",
-    "main.js": "/donate-crypto-widget-builder/static/js/main.453d9f6c.js",
+    "main.css": "/donate-crypto-widget-builder/static/css/main.6e543a52.css",
+    "main.js": "/donate-crypto-widget-builder/static/js/main.fea1c42d.js",
     "static/js/845.8481edf4.chunk.js": "/donate-crypto-widget-builder/static/js/845.8481edf4.chunk.js",
     "static/media/index.txt?raw": "/donate-crypto-widget-builder/static/media/index.697b2aa29cdfc503f2e3.txt",
     "index.html": "/donate-crypto-widget-builder/index.html",
-    "main.fba7385f.css.map": "/donate-crypto-widget-builder/static/css/main.fba7385f.css.map",
-    "main.453d9f6c.js.map": "/donate-crypto-widget-builder/static/js/main.453d9f6c.js.map",
+    "main.6e543a52.css.map": "/donate-crypto-widget-builder/static/css/main.6e543a52.css.map",
+    "main.fea1c42d.js.map": "/donate-crypto-widget-builder/static/js/main.fea1c42d.js.map",
     "845.8481edf4.chunk.js.map": "/donate-crypto-widget-builder/static/js/845.8481edf4.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.fba7385f.css",
-    "static/js/main.453d9f6c.js"
+    "static/css/main.6e543a52.css",
+    "static/js/main.fea1c42d.js"
   ]
 }
