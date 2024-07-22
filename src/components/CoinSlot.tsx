@@ -41,7 +41,6 @@ interface RequiredCoinSlotProps{
 interface CoinSlotProps extends OptionalCoinSlotProps, RequiredCoinSlotProps {};
 
 const CoinSlot = function(props: CoinSlotProps){
-    console.log("coin image: " + props.coinImage);
     let coinOptions: JSX.Element[];
 
 
@@ -51,8 +50,6 @@ const CoinSlot = function(props: CoinSlotProps){
     } else {
         coinsToList = props.availableCoins;
     }
-    console.log("Coins to list before: " + JSON.stringify(props.availableCoins));
-    console.log("Coins to list after: " + JSON.stringify(coinsToList))
 
     coinOptions = [
         <option value={props.coinTicker}>{props.coinTicker}</option>
@@ -69,7 +66,6 @@ const CoinSlot = function(props: CoinSlotProps){
     })]
 
     const toggleAddressEntryArea = function(){
-        console.log("address entry area toggled");
         props.toggleAddressEntryArea(props.id);
     }
 
@@ -82,7 +78,6 @@ const CoinSlot = function(props: CoinSlotProps){
     }
 
     const onChangeLogo = function(event: React.ChangeEvent<HTMLInputElement>){
-        console.log("the new image: " + event.target.value);
         props.onChangeLogo(props.id, event);
     }
 
@@ -90,7 +85,6 @@ const CoinSlot = function(props: CoinSlotProps){
         props.onChangeTicker(props.id, event.target.value);
     }
 
-    console.log("Address is valid: " + props.addressIsValid.toString());
 
     const onRemoveCoinSlot = function(){
         props.onRemoveCoinSlot(props.id)
@@ -100,7 +94,6 @@ const CoinSlot = function(props: CoinSlotProps){
     if(!props.addressEntryIsOpen){
         addressEntryOpenClassName += " closed";
     }
-    console.log("addressEntryClass: " + addressEntryOpenClassName);
 
     let arrowClassName = "arrow ";
     if(props.addressEntryIsOpen){
@@ -127,7 +120,6 @@ let addressEntryElement = (
     </textarea>
 )
 
-console.log("Does this coin have a valid address? " + props.addressIsValid);
 
 let customCoinOptionsClassName = "hidden";
 
@@ -135,7 +127,6 @@ if(props.isCustom){
     customCoinOptionsClassName = "custom";
 } 
 
-console.log("file input classname at render: " + "logo-chooser-" + props.id.toString());
 
 // @ts-ignore
     return(

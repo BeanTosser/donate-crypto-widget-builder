@@ -13,7 +13,6 @@ import ethImage from './img/ethButtonLogo.png';
 import EMPTY_COIN_IMAGE from './img/emptyButtonLogo.png';
 import validator from "multicoin-address-validator";
 
-console.log("Class of the image file: " + btcImage);
 
 let coinImageSources = [
   btcImage,
@@ -82,7 +81,6 @@ function App() {
         if(typeof imageSource === "string"){
           coinsDataCopy[id].image = <img src={imageSource} alt="btc logo" className="coin-image"></img>
           coinsDataCopy[id].imageSource = imageSource;
-          console.log("The newly created image: " + JSON.stringify(coinsDataCopy[id].image));
           update();
         }
     };
@@ -105,14 +103,11 @@ function App() {
   }
 
   const checkIfAddressesAreValid = function(){
-    console.log("Running checkIfAddressesAreValid");
     for(let i = 0; i < coinsDataCopy.length; i++){
       if(!coinsDataCopy[i].addressIsValid) {
-        console.log("FOund a coin that does NOT HAVE a valid address")
         return false;
       }
     }
-    console.log("All coins have a valid address.")
     return true;
   }
 
@@ -120,26 +115,17 @@ function App() {
     if(oldCoinRank !== -1){
       for(let index=0; index < availableCoinsCopy.length; index++) {
         let availableCoinRank = availableCoinsCopy[index];
-        console.log("shippy: The index is " + index + ", and the current available coin rank is " + availableCoinRank);
-        console.log("Shippy: the available coin array as a whole is " + JSON.stringify(availableCoinsCopy))
         if(availableCoinRank === -1){
-          console.log("Shippy: making coin " + SUPPORTED_COINS[oldCoinRank] + " available at the end of the coins array, which is index " + index);
           availableCoinsCopy.splice(index, 0, oldCoinRank);
           return;
         } else if(availableCoinRank > oldCoinRank){
-          console.log("shippy; " + "inserting " + oldCoinRank + " below " + availableCoinRank);
           if(index === 0){
             //insert the coin at the beginning of the array)
-            console.log("Shippy: The coin at " + index + " has a higher rank (" + availableCoinRank + ") than the old coin, whose rank is " + oldCoinRank + "... Therefore...");
-            console.log("shippy: availableCoins before the unshift: " + JSON.stringify(availableCoinsCopy));
             availableCoinsCopy.unshift(oldCoinRank);
-            console.log("shippy: availableCoins after the unshift: " + JSON.stringify(availableCoinsCopy));
-            console.log("Shippy: making coin " + SUPPORTED_COINS[oldCoinRank] + " available at the beginining of the available coins array");
             return;
           } else {
             //insert the coin before the current availableCoin
             availableCoinsCopy.splice(index, 0, oldCoinRank);
-            console.log("Shippy: making coin " + SUPPORTED_COINS[oldCoinRank] + " available in slot " + (index));
             return;
           }
         }
@@ -149,7 +135,6 @@ function App() {
   }
 
   const onChangeCoin = function(id: number, coin: string){
-    console.log("shippy: available coins before change: " + JSON.stringify(availableCoinsCopy));
     // ID is the index of the coin in the existing coin slot array
     // coin is the index of the new coin/ticker to switch to in SUPPORTED_COINS
     let oldCoinRank = coinsDataCopy[id].rank;
@@ -163,12 +148,9 @@ function App() {
 
     //First, remove the NEW coin from availableCoins (if not custom)
 
-    console.log("Shippy: new coin rank is " + newCoinRank);
     if(newCoinRank !== -1){
       availableCoinsCopy.splice(availableCoins.indexOf(newCoinRank), 1);
-      console.log("Shippy: removing the new coin from availableCoins; that coin we are removing is " + SUPPORTED_COINS[newCoinRank])
     } else {
-      console.log("Shippy: NOT REMOVING the new coin from availableCoins");
     }
 
     makeCoinAvailable(oldCoinRank);
@@ -190,7 +172,6 @@ function App() {
     }
 
     coinsDataCopy[id].rank = newCoinRank;
-    console.log("shippy: available coins after change: " + JSON.stringify(availableCoinsCopy));
     update();
   }
 
@@ -220,8 +201,6 @@ function App() {
   */
 
   const onRemoveCoinSlot = function(id: number){
-    console.log("Pappyer: ID of the coin to make available: " + id);
-    console.log("Pappyer: Rank of the coin to make available: " + coinsDataCopy[id].rank);
     makeCoinAvailable(coinsDataCopy[id].rank);
     coinsDataCopy.splice(id, 1);
     update();
@@ -296,13 +275,10 @@ function App() {
   }
 
   const update = function(){
-    console.log("Joppy: Running update");
     setGenerationIsDisabled(!checkIfAddressesAreValid())
     setCoinsData(coinsDataCopy);
     setAvailableCoins(availableCoinsCopy);
   }
-  console.log("Generation disabled? " + generationIsDisabled);
-  //console.log("Generation disabled COINDATA: " + JSON.stringify(coinsData));
 
   return (
 
