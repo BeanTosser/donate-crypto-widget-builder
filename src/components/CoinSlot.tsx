@@ -74,6 +74,7 @@ const CoinSlot = function(props: CoinSlotProps){
     }
 
     const onChangeAddress = function(event: React.ChangeEvent<HTMLTextAreaElement>){
+        console.log("Propogating address: " + event.target.value);
         props.onChangeAddress(props.id, event.target.value, props.coinTicker);
     }
 

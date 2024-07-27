@@ -13,15 +13,6 @@ import ethImage from './img/ethButtonLogo.png';
 import EMPTY_COIN_IMAGE from './img/emptyButtonLogo.png';
 import validator from "multicoin-address-validator";
 
-
-let coinImageSources = [
-  btcImage,
-  xmrImage,
-  usdcImage,
-  dogeImage,
-  ethImage
-]
-
 type AddButtonProps = {
   onAddCoinSlot: () => void;
 }
@@ -94,6 +85,7 @@ function App() {
   }
 
   const onGenerateQrs = function(){
+    console.log("The addresses being sent to writeHtml: " + JSON.stringify(coinsData.map(coin => {return coin.address})));
     generateQrs(coinsData.map(coin => {return coin.customTicker}), coinsData.map(coin => {return coin.address}), coinsData.map(coin => {return coin.imageSource}));
   }
 
@@ -170,15 +162,19 @@ function App() {
       coinsDataCopy[id].image = EMPTY_COIN_IMAGE_ELEMENT;
       //availableCoinsCopy = [...[oldCoinRank], ...availableCoinsCopy];
     }
+    coinsDataCopy[id].imageSource = coinsDataCopy[id].image.props.src;
 
     coinsDataCopy[id].rank = newCoinRank;
+    console.log("image source for the newly-swapped-in coin: " + coinsDataCopy[id].imageSource);
     update();
   }
 
   const onChangeAddress = function(id: number, address: string, ticker: string) {
+    console.log("Changing coin address to " + address);
     let numLines = Math.trunc(address.length / ADDRESS_LINE_CHARS) + (address.length % ADDRESS_LINE_CHARS === 0 ? 0 : 1);
     coinsDataCopy[id].address = address;
     coinsDataCopy[id].lines = numLines;
+    console.log("Setting coin address for coin " + coinsDataCopy[id].customTicker + " to " + address);
     if(coinsDataCopy[id].rank === -1){
       coinsDataCopy[id].addressIsValid = true;
     } else {
@@ -263,13 +259,17 @@ function App() {
       } as CoinData
     )
 
+    console.log("image source for the newly-added coin: " + coinsDataCopy[coinsDataCopy.length - 1].imageSource);
+
     update();
   }
 
   const makeAllAddressesValid = function() {
     coinsDataCopy.forEach((coin, index) => {
-      coin.address = COIN_TEST_ADDRESSES[SUPPORTED_COINS.indexOf(coin.ticker)];
-      coin.addressIsValid = true;
+      if(coin.rank !== -1){
+        coin.address = COIN_TEST_ADDRESSES[SUPPORTED_COINS.indexOf(coin.ticker)];
+        coin.addressIsValid = true;
+      }
     })
     update();
   }
@@ -278,7 +278,10 @@ function App() {
     setGenerationIsDisabled(!checkIfAddressesAreValid())
     setCoinsData(coinsDataCopy);
     setAvailableCoins(availableCoinsCopy);
+    console.log("spooky: The addresses at update: " + coinsData.map(coin => {return coin.address}));
   }
+
+  console.log("spooky: The addresses at render: " + coinsData.map(coin => {return coin.address}));
 
   return (
 

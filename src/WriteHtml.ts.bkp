@@ -38,7 +38,6 @@ export default async function WriteHtml(tickers: string[], addresses: string[], 
         // get the image file path
         let filePath = "/src/img/" + ticker + "ButtonLogo.png";
         let imageData = imageSources[index];
-        console.log("The image source for " + ticker + "is: " + imageData);
         let binaryImageData: Blob;
         try{
             binaryImageData = dataURItoBlob(imageData);
@@ -46,9 +45,8 @@ export default async function WriteHtml(tickers: string[], addresses: string[], 
             console.log("dataUriToBlob failed because: " + e);
         }
         zip.file(filePath, binaryImageData, {binary: true});
-console.log("The addresses passed into writehtml: " + JSON.stringify(addresses))
+        console.log("The address for this ticker is: " + addresses[index]);
         let address = addresses[index] || "";
-        console.log("addresses[index]: " + addresses[index]);
         console.log("The new address is: " + address);
         console.log("The breakpoint");
         //QRCode
@@ -75,7 +73,6 @@ console.log("The addresses passed into writehtml: " + JSON.stringify(addresses))
     } catch(e){
         console.log("found the failing length line. Reason for failure: " + e)
     }
-    console.log("SUccessfully created newIndexJs")
     newIndexJs = instructionsString.concat("\n", newIndexJs);
     zip.file("/src/index.js", newIndexJs);
     zip.generateAsync({type: 'blob'}).then(function(content) {
