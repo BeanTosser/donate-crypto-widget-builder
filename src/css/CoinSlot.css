@@ -96,3 +96,7 @@ span:before {
     content: attr(value);
     color: #aaa; 
 }
+
+.custom-ticker-entry{
+    width: 94%;
+}

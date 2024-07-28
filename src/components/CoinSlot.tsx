@@ -151,7 +151,7 @@ if(props.isCustom){
                 </div>
             </div>
             <div className={customCoinOptionsClassName}>
-                <input type="text" onChange={onChangeTicker} value={props.customTicker}></input>
+                <input type="text" onChange={onChangeTicker} value={props.customTicker} className="custom-ticker-entry"></input>
                 <input type="file" id={"logo-chooser-" + props.id.toString()} onChange={onChangeLogo}></input>
             </div>
         </div>

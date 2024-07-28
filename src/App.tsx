@@ -287,8 +287,6 @@ function App() {
 
     <div className="App">
       <div className="debug">
-        Supported: {SUPPORTED_COINS.join(", ")} <br/>
-        Available: {availableCoins.map(coin => {return <>{coin} </>})}
       </div>
       <div className="app-box">
         <h1>Build your cryptocurrency donation widget</h1>
