@@ -35,6 +35,7 @@ interface RequiredCoinSlotProps{
     onChangeLogo: (id: number, event: React.ChangeEvent<HTMLInputElement>) => void,
     onChangeTicker: (id: number, ticker: string) => void,
     toggleAddressEntryArea: (id: number) => void,
+    moveCoinSlot: (shouldMoveLeft: boolean, id: number) => void,
     lines: number
 }
 
@@ -121,6 +122,13 @@ let addressEntryElement = (
     </textarea>
 )
 
+const moveCoinSlotLeft = function(){
+    props.moveCoinSlot(true, props.id);
+}
+
+const moveCoinSlotRight = function() {
+    props.moveCoinSlot(false, props.id);
+}
 
 let customCoinOptionsClassName = "hidden";
 
@@ -128,31 +136,37 @@ if(props.isCustom){
     customCoinOptionsClassName = "custom";
 } 
 
-
 // @ts-ignore
     return(
         <div className="coin-slot">
-            <div className="select-area">
-                <input type="button" className="remove-button" onClick = {onRemoveCoinSlot} value="X"></input>
-                <select value={props.coinTicker || ""} className = "dropdown-menu" onChange={onChangeCoin}>
-                    {coinOptions}
-                </select>
-                {props.coinImage}
+            <div className = "move-coin-button-container">
+                <button onClick={moveCoinSlotLeft}>{"<"}</button>
             </div>
-            <div className="address-entry-area">
-                <div className="address-label-area">
-                    <i className={arrowClassName}></i>
-                    <div className="address-entry-label" onClick={toggleAddressEntryArea}>Address</div>
+            <div className="coin-slot-options">
+                <div className="select-area">
+                    <input type="button" className="remove-button" onClick = {onRemoveCoinSlot} value="X"></input>
+                    <select value={props.coinTicker || ""} className = "dropdown-menu" onChange={onChangeCoin}>
+                        {coinOptions}
+                    </select>
+                    {props.coinImage}
                 </div>
-                
-                <div className={addressEntryOpenClassName}>
-                {addressEntryElement}
-
+                <div className="address-entry-area">
+                    <div className="address-label-area">
+                        <i className={arrowClassName}></i>
+                        <div className="address-entry-label" onClick={toggleAddressEntryArea}>Address</div>
+                    </div>
+                    
+                    <div className={addressEntryOpenClassName}>
+                        {addressEntryElement}
+                    </div>
+                </div>
+                <div className={customCoinOptionsClassName}>
+                    <input type="text" onChange={onChangeTicker} value={props.customTicker} className="custom-ticker-entry" placeholder="ticker"></input>
+                    <input type="file" id={"logo-chooser-" + props.id.toString()} className="logo-chooser" onChange={onChangeLogo} ></input>
                 </div>
             </div>
-            <div className={customCoinOptionsClassName}>
-                <input type="text" onChange={onChangeTicker} value={props.customTicker} className="custom-ticker-entry"></input>
-                <input type="file" id={"logo-chooser-" + props.id.toString()} onChange={onChangeLogo}></input>
+            <div className = "move-coin-button-container">
+                <button onClick={moveCoinSlotRight}>{">"}</button>
             </div>
         </div>
     )

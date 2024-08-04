@@ -45,7 +45,7 @@ function App() {
     <img src={ethImage} alt="eth logo" className="coin-image"></img>
   ]
 
-  const EMPTY_COIN_IMAGE_ELEMENT = <img src={EMPTY_COIN_IMAGE} alt="btc logo" className="coin-image"></img>
+  const EMPTY_COIN_IMAGE_ELEMENT = <img src={EMPTY_COIN_IMAGE} alt="empty-coin-logo" className="coin-image"></img>
 
   let [availableCoins, setAvailableCoins] = useState<number[]>([1,2,3,4,-1]);
   let [generationIsDisabled, setGenerationIsDisabled] = useState<boolean>(true);
@@ -63,6 +63,20 @@ function App() {
   ]);
   let coinsDataCopy = [...coinsData];
   let availableCoinsCopy = [...availableCoins];
+
+  const moveCoinSlot = function(shouldMoveLeft: boolean, id: number){
+    let targetSlot = shouldMoveLeft ? id - 1 : id + 1;
+    if(targetSlot < coinsDataCopy.length && targetSlot > -1){
+      if(shouldMoveLeft){
+        coinsDataCopy = [...coinsDataCopy.slice(0, targetSlot), ...[coinsDataCopy[id]], ...[coinsDataCopy[targetSlot]], ...coinsDataCopy.slice(id+1, coinsDataCopy.length)];
+      } else { 
+        coinsDataCopy = [...coinsDataCopy.slice(0, id), ...[coinsDataCopy[targetSlot]], ...[coinsDataCopy[id]], ...coinsDataCopy.slice(targetSlot+1, coinsDataCopy.length)];
+      }
+      update();
+      return;
+    }
+    console.log("coinsDataCopy not updated");
+  }
 
   const onChangeLogo = async function(id: number, event: React.ChangeEvent<HTMLInputElement>){
     // Get the file from the file input element
@@ -219,6 +233,7 @@ function App() {
         onChangeTicker={onChangeTicker}
         onRemoveCoinSlot={onRemoveCoinSlot}
         toggleAddressEntryArea={onToggleAddressEntry}
+        moveCoinSlot={moveCoinSlot}
         lines={coin.lines}
       />
     )

@@ -1,10 +1,14 @@
+:root{
+  --coin-slot-container-width: 14.4em;
+}
+
 .App {
   text-align: center;
 }
 
 .app-box{
   border: 1px solid rgb(0, 0, 0);
-  max-width: 45em;
+  max-width: 73em;
   margin: 0 auto;
   padding-left: 1.5em;
   padding-right: 1.5em;
@@ -32,6 +36,7 @@
 .coin-list{
   margin: 0 auto;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(max(8em, 10em), 1fr));
+  grid-template-columns: repeat(auto-fill, var(--coin-slot-container-width));
+  grid-template-rows: repeat(auto-fill, 15em);
   gap: 0.25em;
 }

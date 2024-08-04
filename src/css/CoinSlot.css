@@ -7,11 +7,31 @@
 }
 
 .coin-slot{
-    width: var(--coin-slot-width);
     margin: 1em auto;
     border: 1px solid black;
     padding: 0.6em;
     position: relative;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+}
+
+.change-coin-button-container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.coin-slot-options{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: inherit;
+    max-width: 8.6em;
+}
+
+.logo-chooser{
+    color: rgba(0,0,0,0);
 }
 
 .address-entry-container{
