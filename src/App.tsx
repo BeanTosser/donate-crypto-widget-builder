@@ -13,6 +13,8 @@ import ethImage from './img/ethButtonLogo.png';
 import EMPTY_COIN_IMAGE from './img/emptyButtonLogo.png';
 import validator from "multicoin-address-validator";
 
+const CSS_ROOT: HTMLElement = document.querySelector(':root');
+
 type AddButtonProps = {
   onAddCoinSlot: () => void;
 }
@@ -213,6 +215,7 @@ function App() {
   const onRemoveCoinSlot = function(id: number){
     makeCoinAvailable(coinsDataCopy[id].rank);
     coinsDataCopy.splice(id, 1);
+    setNumColumns();
     update();
   }
 
@@ -274,9 +277,21 @@ function App() {
       } as CoinData
     )
 
+    setNumColumns();
+
     console.log("image source for the newly-added coin: " + coinsDataCopy[coinsDataCopy.length - 1].imageSource);
 
     update();
+  }
+  const setNumColumns = function() {
+    //adjust number of columns is needed
+    if(coinsDataCopy.length < SUPPORTED_COINS.length){
+      CSS_ROOT.style.setProperty("--num-columns", coinsDataCopy.length.toString());
+    } else {
+      CSS_ROOT.style.setProperty("--num-columns", SUPPORTED_COINS.length.toString());
+    }
+
+    console.log("There should now be " + CSS_ROOT.style.getPropertyValue("--num-columns"));
   }
 
   const makeAllAddressesValid = function() {
@@ -304,7 +319,7 @@ function App() {
       <div className="debug">
       </div>
       <div className="app-box">
-        <h1>Build your cryptocurrency donation widget</h1>
+        <h1>Cryptowidget Builder</h1>
         <div className="coin-list-container">
           <AddButton onAddCoinSlot={onAddCoinSlot}/>
           <div className="coin-list">

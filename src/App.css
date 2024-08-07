@@ -1,5 +1,6 @@
 :root{
   --coin-slot-container-width: 14.4em;
+  --num-columns: 1;
 }
 
 .App {
@@ -7,6 +8,7 @@
 }
 
 .app-box{
+  width: fit-content;
   border: 1px solid rgb(0, 0, 0);
   max-width: 73em;
   margin: 0 auto;
@@ -29,14 +31,20 @@
   color: #61dafb;
 }
 
+.coin-list-container{
+  width: fit-content;
+  max-width: 73em;
+  margin: 0 auto;
+}
+
 .hidden{
   display: none;
 }
 
 .coin-list{
+  width: calc(var(--coin-slot-container-width) * var(--num-columns));
   margin: 0 auto;
   display: grid;
-  grid-template-columns: repeat(auto-fill, var(--coin-slot-container-width));
-  grid-template-rows: repeat(auto-fill, 15em);
+  grid-template-columns: repeat(var(--num-columns), var(--coin-slot-container-width));
   gap: 0.25em;
 }
