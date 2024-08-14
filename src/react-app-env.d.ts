@@ -8,3 +8,4 @@ declare module "*.html";
 declare module "*?raw";
 declare module "*.css";
 declare module "*.test";
+declare module "*.ttf";

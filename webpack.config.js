@@ -59,13 +59,25 @@ module.exports = {
             },
         },
         {
-            test: /\.(jpg|png|svg)$/,
+            test: /\.(jpg|png)$/,
             loader: 'file-loader',
             options: {
               name: '[path][name].[hash].[ext]',
             },
         },
-        
+        {
+          test: /\.svg$/,
+          loader: 'svg-inline-loader'
+        },
+        {
+          test: /\.svg$/i, 
+          issuer: /\.[jt]sx?$/,
+          use: ['@svgr/webpack'],
+        },
+        {
+          test: /\.ttf$/i, 
+          type: 'asset/resource'
+        },
     ]
   }
 };

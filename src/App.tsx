@@ -5,14 +5,19 @@ import './App.css';
 import generateQrs from './WriteHtml';
 import {ADDRESS_LINE_CHARS, COIN_TEST_ADDRESSES} from './constants';
 
-import btcImage from './img/btcButtonLogo.png';
-import xmrImage from './img/xmrButtonLogo.png';
-import usdcImage from './img/usdcButtonLogo.png';
-import dogeImage from './img/dogeButtonLogo.png';
-import ethImage from './img/ethButtonLogo.png';
-import EMPTY_COIN_IMAGE from './img/emptyButtonLogo.png';
+import btcImage from './img/bitcoin-btc-logo.svg';
+import xmrImage from './img/monero-xmr-logo.svg';
+import usdcImage from './img/usd-coin-usdc-logo.svg';
+import dogeImage from './img/dogecoin-doge-logo.svg';
+import ethImage from './img/ethereum-eth-logo.svg';
+import EMPTY_COIN_IMAGE from './img/empty-coin-logo.svg';
 import validator from "multicoin-address-validator";
 
+try{
+console.log("btc image source: " + btcImage);
+} catch(e) {
+  console.log("btcImage: " + btcImage);
+}
 const CSS_ROOT: HTMLElement = document.querySelector(':root');
 
 type AddButtonProps = {
@@ -30,7 +35,7 @@ type CoinData = {
   ticker: string,
   customTicker: string,
   addressIsValid: boolean,
-  image: JSX.Element,
+  image: string,
   imageSource: string,
   addressEntryIsOpen: boolean,
   rank: number,
@@ -40,11 +45,11 @@ type CoinData = {
 function App() {
 
   const SUPPORTED_COIN_IMAGES = [
-    <img src={btcImage} alt="btc logo" className="coin-image"></img>,
-    <img src={xmrImage} alt="xmr logo" className="coin-image"></img>,
-    <img src={usdcImage} alt="usdc logo" className="coin-image"></img>,
-    <img src={dogeImage} alt="doge logo" className="coin-image"></img>,
-    <img src={ethImage} alt="eth logo" className="coin-image"></img>
+    btcImage,
+    xmrImage,
+    usdcImage,
+    dogeImage,
+    ethImage
   ]
 
   const EMPTY_COIN_IMAGE_ELEMENT = <img src={EMPTY_COIN_IMAGE} alt="empty-coin-logo" className="coin-image"></img>
@@ -53,14 +58,15 @@ function App() {
   let [generationIsDisabled, setGenerationIsDisabled] = useState<boolean>(true);
   let [coinsData, setCoinsData] = useState<CoinData[]>([
     {
-      address: "",
+      address: "Address",
       ticker: SUPPORTED_COINS[0],
       customTicker: "",
       addressIsValid: false,
       image: SUPPORTED_COIN_IMAGES[0],
-      imageSource: SUPPORTED_COIN_IMAGES[0].props.src,
+      imageSource: SUPPORTED_COIN_IMAGES[0],
       rank: 0,
       addressEntryIsOpen: false,
+      lines: 1
     } as CoinData
   ]);
   let coinsDataCopy = [...coinsData];
@@ -86,7 +92,7 @@ function App() {
     reader.onloadend = () => {
         let imageSource = reader.result;
         if(typeof imageSource === "string"){
-          coinsDataCopy[id].image = <img src={imageSource} alt="btc logo" className="coin-image"></img>
+          coinsDataCopy[id].image = imageSource;
           coinsDataCopy[id].imageSource = imageSource;
           update();
         }
@@ -175,10 +181,10 @@ function App() {
       coinsDataCopy[id].ticker = "custom";
       coinsDataCopy[id].customTicker = "TKR";
       coinsDataCopy[id].addressIsValid = true;
-      coinsDataCopy[id].image = EMPTY_COIN_IMAGE_ELEMENT;
+      coinsDataCopy[id].image = EMPTY_COIN_IMAGE_ELEMENT.props.src;
       //availableCoinsCopy = [...[oldCoinRank], ...availableCoinsCopy];
     }
-    coinsDataCopy[id].imageSource = coinsDataCopy[id].image.props.src;
+    coinsDataCopy[id].imageSource = coinsDataCopy[id].image;
 
     coinsDataCopy[id].rank = newCoinRank;
     console.log("image source for the newly-swapped-in coin: " + coinsDataCopy[id].imageSource);
@@ -186,15 +192,18 @@ function App() {
   }
 
   const onChangeAddress = function(id: number, address: string, ticker: string) {
-    console.log("Changing coin address to " + address);
-    let numLines = Math.trunc(address.length / ADDRESS_LINE_CHARS) + (address.length % ADDRESS_LINE_CHARS === 0 ? 0 : 1);
-    coinsDataCopy[id].address = address;
-    coinsDataCopy[id].lines = numLines;
-    console.log("Setting coin address for coin " + coinsDataCopy[id].customTicker + " to " + address);
-    if(coinsDataCopy[id].rank === -1){
-      coinsDataCopy[id].addressIsValid = true;
-    } else {
-      coinsDataCopy[id].addressIsValid = validator.validate(address, ticker.toUpperCase());
+    // Don't allow whitespace characters
+    let match: number = address.search(/\s/);
+    if(match === -1){
+      let numLines = Math.trunc(address.length / ADDRESS_LINE_CHARS) + (address.length % ADDRESS_LINE_CHARS === 0 ? 0 : 1);
+      coinsDataCopy[id].address = address;
+      coinsDataCopy[id].lines = numLines;
+      console.log("Setting coin address for coin " + coinsDataCopy[id].customTicker + " to " + address);
+      if(coinsDataCopy[id].rank === -1){
+        coinsDataCopy[id].addressIsValid = true;
+      } else {
+        coinsDataCopy[id].addressIsValid = validator.validate(address, ticker.toUpperCase());
+      }
     }
     update();
   }
@@ -256,24 +265,25 @@ function App() {
     }
 
     let newTicker: string;
-    let newImage: JSX.Element;
+    let newImage: string;
     if(coinRank !== -1){
       newTicker = SUPPORTED_COINS[coinRank];
       newImage = SUPPORTED_COIN_IMAGES[coinRank];
     } else {
       newTicker = "custom";
-      newImage = EMPTY_COIN_IMAGE_ELEMENT;
+      newImage = EMPTY_COIN_IMAGE_ELEMENT.props.src;
     }
 
     coinsDataCopy.push(
       {
-        address: "",
+        address: "Address",
         ticker: newTicker,
         customTicker: newTicker,
         addressIsValid: coinRank === -1 ? true : false,
         image: newImage,
-        imageSource: newImage.props.src,
-        rank: coinRank
+        imageSource: newImage,
+        rank: coinRank,
+        lines: 1
       } as CoinData
     )
 
@@ -297,7 +307,7 @@ function App() {
   const makeAllAddressesValid = function() {
     coinsDataCopy.forEach((coin, index) => {
       if(coin.rank !== -1){
-        coin.address = COIN_TEST_ADDRESSES[SUPPORTED_COINS.indexOf(coin.ticker)];
+        onChangeAddress(index, COIN_TEST_ADDRESSES[SUPPORTED_COINS.indexOf(coin.ticker)], coin.customTicker);
         coin.addressIsValid = true;
       }
     })

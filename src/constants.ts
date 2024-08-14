@@ -6,7 +6,7 @@ export const SUPPORTED_COINS = [
     "eth"
 ]
 
-export const ADDRESS_LINE_CHARS = 15;
+export const ADDRESS_LINE_CHARS = 16;
 
 export const COIN_TEST_ADDRESSES = [
     "bc1p8k4v4xuz55dv49svzjg43qjxq2whur7ync9tm0xgl5t4wjl9ca9snxgmlt",

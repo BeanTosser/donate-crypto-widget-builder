@@ -1,19 +1,56 @@
 :root{
-    --coin-slot-width: 8em;
+    --coin-slot-width: 12Sem;
+    --coin-image-margin: 0.75em;
+    --move-button-container-width: 1.5em;
+}
+
+@font-face {
+    font-family: 'ROBOTO-MONO';
+    src: url('../../fonts/RobotoMono-VariableFont_wght.ttf') format('ttf');
 }
 
 .dropdown-menu{
-    height: 1.6em;
+    width: 100%;
 }
 
-.coin-slot{
-    margin: 1em auto;
-    border: 1px solid black;
-    padding: 0.6em;
-    position: relative;
+.coin-slot-grid{
+    font-family: 'ROBOTO-MONO';
+    margin: 0 auto;
+    width: 100%;
     display: grid;
-    grid-template-columns: 1fr auto 1fr;
+    grid-template-columns: var(--move-button-container-width) 1fr var(--move-button-container-width);
     align-items: center;
+    height: var(--coin-slot-width);
+    position: relative;
+}
+
+.move-button-container{
+    width: var(--move-button-container-width);
+}
+
+.remove-button{
+    position: absolute;
+    top: 0.5em;
+    left: 0.5em;
+}
+  
+.coin-slot{
+    margin: 0 auto;
+    border: 1px solid black;
+    width: 85%;
+    aspect-ratio: 1 / 1;
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+#background-image{
+    position: absolute;
+    width: 90%;
+    height: 90%;
+    left: var(--coin-image-margin);
+    opacity: 20%;
+    z-index: -10;
 }
 
 .change-coin-button-container{
@@ -23,6 +60,7 @@
 }
 
 .coin-slot-options{
+    margin: 0 auto;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -50,10 +88,6 @@
     border-right: 1px solid transparent;
     
     border-bottom: 1px solid black;
-}
-
-.coin-image{
-    width: 3em;
 }
 
 .arrow {
@@ -87,7 +121,7 @@ textarea{
 
 .invalid-address{
     color: red;
-    border: 3px solid red;
+    border: 1px solid red;
     font-weight: bold;
 }
 
