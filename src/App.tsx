@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import CoinSlot from "./components/CoinSlot";
 import {SUPPORTED_COINS} from "./constants";
 import './App.css';
@@ -24,9 +24,25 @@ type AddButtonProps = {
   onAddCoinSlot: () => void;
 }
 
+type CoinsListItemProps = {
+  children: React.ReactNode,
+  bordered?: boolean
+}
+
 const AddButton = function (props: AddButtonProps) {
   return(
-    <input type="button" onClick = {props.onAddCoinSlot} value="+"></input>
+    <>
+      <input type="button" onClick = {props.onAddCoinSlot} value="+" id="add-button"></input>
+    </>
+  )
+}
+
+const CoinsListItem = (props: CoinsListItemProps) => {
+  let borderedClassName = props.bordered ? " bordered" : "";
+  return(
+    <div className={"coin-slot" + borderedClassName}>
+      {props.children}
+    </div>
   )
 }
 
@@ -43,6 +59,10 @@ type CoinData = {
 }
 
 function App() {
+
+  useEffect(() => {
+    setNumColumns();
+  }, [])
 
   const SUPPORTED_COIN_IMAGES = [
     btcImage,
@@ -208,7 +228,6 @@ function App() {
     update();
   }
 
-
   /*
     id: number,
     coinTicker: string,
@@ -227,29 +246,6 @@ function App() {
     setNumColumns();
     update();
   }
-
-  let coinList = coinsData.map((coin, index) => {
-    return(
-      <CoinSlot 
-        id={index}
-        coinTicker={coin.ticker}
-        addressEntryIsOpen={coin.addressEntryIsOpen}
-        availableCoins={availableCoins}
-        coinImage={coin.image}
-        address={coin.address}
-        addressIsValid={coin.addressIsValid}
-        isCustom={coin.rank === -1 ? true : false}
-        onChangeCoin={onChangeCoin}
-        onChangeAddress={onChangeAddress}
-        onChangeLogo={onChangeLogo}
-        onChangeTicker={onChangeTicker}
-        onRemoveCoinSlot={onRemoveCoinSlot}
-        toggleAddressEntryArea={onToggleAddressEntry}
-        moveCoinSlot={moveCoinSlot}
-        lines={coin.lines}
-      />
-    )
-  })
 
   const onAddCoinSlot = function(){
 
@@ -273,7 +269,7 @@ function App() {
       newTicker = "custom";
       newImage = EMPTY_COIN_IMAGE_ELEMENT.props.src;
     }
-
+    
     coinsDataCopy.push(
       {
         address: "Address",
@@ -294,11 +290,13 @@ function App() {
     update();
   }
   const setNumColumns = function() {
-    //adjust number of columns is needed
-    if(coinsDataCopy.length < SUPPORTED_COINS.length){
-      CSS_ROOT.style.setProperty("--num-columns", coinsDataCopy.length.toString());
+    //adjust number of columns is needed - subtract 1 to leave room for the add button
+    if(coinsDataCopy.length < SUPPORTED_COINS.length - 1){
+      CSS_ROOT.style.setProperty("--num-columns", (coinsDataCopy.length + 1).toString());
+      console.log("Setting number of columns to: " + (coinsDataCopy.length + 1).toString())
     } else {
       CSS_ROOT.style.setProperty("--num-columns", SUPPORTED_COINS.length.toString());
+      console.log("Setting number of columns to: " + (coinsDataCopy.length + 1).toString())
     }
 
     console.log("There should now be " + CSS_ROOT.style.getPropertyValue("--num-columns"));
@@ -320,6 +318,44 @@ function App() {
     setAvailableCoins(availableCoinsCopy);
     console.log("spooky: The addresses at update: " + coinsData.map(coin => {return coin.address}));
   }
+
+  let coinsDataWithAddButton: CoinData[] | null;
+  
+  //Add a blank coin slot; this will hold the "add" button
+  coinsDataWithAddButton = [...coinsData, null];
+
+  let coinList = coinsDataWithAddButton.map((coin, index) => {
+    let listItem: JSX.Element;
+    if(coin !== null){
+      listItem = 
+        <CoinsListItem bordered={true}>
+          <CoinSlot 
+            id={index}
+            coinTicker={coin.ticker}
+            addressEntryIsOpen={coin.addressEntryIsOpen}
+            availableCoins={availableCoins}
+            coinImage={coin.image}
+            address={coin.address}
+            addressIsValid={coin.addressIsValid}
+            isCustom={coin.rank === -1 ? true : false}
+            onChangeCoin={onChangeCoin}
+            onChangeAddress={onChangeAddress}
+            onChangeLogo={onChangeLogo}
+            onChangeTicker={onChangeTicker}
+            onRemoveCoinSlot={onRemoveCoinSlot}
+            toggleAddressEntryArea={onToggleAddressEntry}
+            moveCoinSlot={moveCoinSlot}
+            lines={coin.lines}
+          />
+        </CoinsListItem>
+    } else {
+      listItem =
+        <CoinsListItem bordered={true}>
+          <AddButton onAddCoinSlot={onAddCoinSlot} />
+        </CoinsListItem>
+    }
+    return listItem;
+  })
 
   console.log("spooky: The addresses at render: " + coinsData.map(coin => {return coin.address}));
 

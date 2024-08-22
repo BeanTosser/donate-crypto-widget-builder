@@ -2,6 +2,25 @@
   --coin-slot-container-width: 14.4em;
   --num-columns: 1;
 }
+  
+.coin-slot{
+  margin: 0 auto;
+  width: 85%;
+  aspect-ratio: 1 / 1;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.bordered{
+  border: 1px solid black;
+}
+
+#add-button{
+  margin: 0 auto;
+  width:50%;
+  height:40%
+}
 
 .App {
   text-align: center;

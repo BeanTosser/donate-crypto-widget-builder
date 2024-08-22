@@ -144,7 +144,7 @@ if(props.isCustom){
 
 // @ts-ignore
     return(
-        <div className="coin-slot">
+        <>
             <input type="button" className="remove-button" onClick = {onRemoveCoinSlot} value="X"></input>
             <img src={props.coinImage} id="background-image" alt="coin"></img>
             <div className="coin-slot-grid">
@@ -168,7 +168,7 @@ if(props.isCustom){
                     <button className="move-button" onClick={moveCoinSlotRight}>{">"}</button>
                 </div>
             </div>
-        </div>
+        </>
     )
 }
 

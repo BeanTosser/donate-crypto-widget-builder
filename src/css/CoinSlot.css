@@ -15,33 +15,22 @@
 
 .coin-slot-grid{
     font-family: 'ROBOTO-MONO';
-    margin: 0 auto;
-    width: 100%;
-    display: grid;
-    grid-template-columns: var(--move-button-container-width) 1fr var(--move-button-container-width);
+    margin: 0 0;
+    display: flex;
+    flex-direction: row;
     align-items: center;
     height: var(--coin-slot-width);
     position: relative;
 }
 
 .move-button-container{
-    width: var(--move-button-container-width);
+    width: 20%;
 }
 
 .remove-button{
     position: absolute;
     top: 0.5em;
     left: 0.5em;
-}
-  
-.coin-slot{
-    margin: 0 auto;
-    border: 1px solid black;
-    width: 85%;
-    aspect-ratio: 1 / 1;
-    position: relative;
-    display: flex;
-    align-items: center;
 }
 
 #background-image{
@@ -60,12 +49,11 @@
 }
 
 .coin-slot-options{
+    width: 60%;
     margin: 0 auto;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    width: inherit;
-    max-width: 8.6em;
 }
 
 .logo-chooser{
@@ -76,6 +64,7 @@
     display: flex;
     flex-direction: column;
 }
+
 
 .closed{
     display: none;
