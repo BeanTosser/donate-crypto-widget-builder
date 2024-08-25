@@ -1,16 +1,23 @@
 {
   "files": {
-    "main.css": "/donate-crypto-widget-builder/static/css/main.c59023b4.css",
-    "main.js": "/donate-crypto-widget-builder/static/js/main.2a326b4d.js",
+    "main.css": "/donate-crypto-widget-builder/static/css/main.9f09628c.css",
+    "main.js": "/donate-crypto-widget-builder/static/js/main.c8c9b325.js",
     "static/js/845.8481edf4.chunk.js": "/donate-crypto-widget-builder/static/js/845.8481edf4.chunk.js",
+    "static/media/RobotoMono-VariableFont_wght.ttf": "/donate-crypto-widget-builder/static/media/RobotoMono-VariableFont_wght.e14e25b7c497634efdfe.ttf",
+    "static/media/dogecoin-doge-logo.svg": "/donate-crypto-widget-builder/static/media/dogecoin-doge-logo.fde93423cc0f01b4081d2aaad92652b6.svg",
     "static/media/index.txt?raw": "/donate-crypto-widget-builder/static/media/index.697b2aa29cdfc503f2e3.txt",
+    "static/media/usd-coin-usdc-logo.svg": "/donate-crypto-widget-builder/static/media/usd-coin-usdc-logo.e921315b62e53863f0740a279658ce38.svg",
+    "static/media/bitcoin-btc-logo.svg": "/donate-crypto-widget-builder/static/media/bitcoin-btc-logo.f7ad3a97463c43814ddd38cdbdd9237d.svg",
+    "static/media/empty-coin-logo.svg": "/donate-crypto-widget-builder/static/media/empty-coin-logo.9bf913e243f883cf8e7edadc27176969.svg",
+    "static/media/ethereum-eth-logo.svg": "/donate-crypto-widget-builder/static/media/ethereum-eth-logo.fa1f28858540882dbada4a2f634c3b50.svg",
+    "static/media/monero-xmr-logo.svg": "/donate-crypto-widget-builder/static/media/monero-xmr-logo.3e4d123589944170ae81fe55c34a11ad.svg",
     "index.html": "/donate-crypto-widget-builder/index.html",
-    "main.c59023b4.css.map": "/donate-crypto-widget-builder/static/css/main.c59023b4.css.map",
-    "main.2a326b4d.js.map": "/donate-crypto-widget-builder/static/js/main.2a326b4d.js.map",
+    "main.9f09628c.css.map": "/donate-crypto-widget-builder/static/css/main.9f09628c.css.map",
+    "main.c8c9b325.js.map": "/donate-crypto-widget-builder/static/js/main.c8c9b325.js.map",
     "845.8481edf4.chunk.js.map": "/donate-crypto-widget-builder/static/js/845.8481edf4.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.c59023b4.css",
-    "static/js/main.2a326b4d.js"
+    "static/css/main.9f09628c.css",
+    "static/js/main.c8c9b325.js"
   ]
 }
