@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.css": "/donate-crypto-widget-builder/static/css/main.9f09628c.css",
+    "main.css": "/donate-crypto-widget-builder/static/css/main.007e3ba5.css",
     "main.js": "/donate-crypto-widget-builder/static/js/main.c8c9b325.js",
     "static/js/845.8481edf4.chunk.js": "/donate-crypto-widget-builder/static/js/845.8481edf4.chunk.js",
     "static/media/RobotoMono-VariableFont_wght.ttf": "/donate-crypto-widget-builder/static/media/RobotoMono-VariableFont_wght.e14e25b7c497634efdfe.ttf",
@@ -12,12 +12,12 @@
     "static/media/ethereum-eth-logo.svg": "/donate-crypto-widget-builder/static/media/ethereum-eth-logo.fa1f28858540882dbada4a2f634c3b50.svg",
     "static/media/monero-xmr-logo.svg": "/donate-crypto-widget-builder/static/media/monero-xmr-logo.3e4d123589944170ae81fe55c34a11ad.svg",
     "index.html": "/donate-crypto-widget-builder/index.html",
-    "main.9f09628c.css.map": "/donate-crypto-widget-builder/static/css/main.9f09628c.css.map",
+    "main.007e3ba5.css.map": "/donate-crypto-widget-builder/static/css/main.007e3ba5.css.map",
     "main.c8c9b325.js.map": "/donate-crypto-widget-builder/static/js/main.c8c9b325.js.map",
     "845.8481edf4.chunk.js.map": "/donate-crypto-widget-builder/static/js/845.8481edf4.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.9f09628c.css",
+    "static/css/main.007e3ba5.css",
     "static/js/main.c8c9b325.js"
   ]
 }
