@@ -5,7 +5,7 @@
   
 .coin-slot{
   margin: 0 auto;
-  width: 85%;
+  width: 12em;
   aspect-ratio: 1 / 1;
   position: relative;
   display: flex;
@@ -66,4 +66,8 @@
   display: grid;
   grid-template-columns: repeat(var(--num-columns), var(--coin-slot-container-width));
   gap: 0.25em;
+}
+
+.logo-chooser{
+  width:75%;
 }

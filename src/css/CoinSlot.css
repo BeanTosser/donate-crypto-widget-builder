@@ -1,5 +1,5 @@
 :root{
-    --coin-slot-width: 12Sem;
+    --coin-slot-width: 12em;
     --coin-image-margin: 0.75em;
     --move-button-container-width: 1.5em;
 }
@@ -35,9 +35,9 @@
 
 #background-image{
     position: absolute;
-    width: 90%;
-    height: 90%;
-    left: var(--coin-image-margin);
+    width: 75%;
+    height: 75%;
+    transform: translateX(calc(6em - 50%));
     opacity: 20%;
     z-index: -10;
 }

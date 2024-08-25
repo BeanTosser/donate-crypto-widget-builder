@@ -350,7 +350,7 @@ function App() {
         </CoinsListItem>
     } else {
       listItem =
-        <CoinsListItem bordered={true}>
+        <CoinsListItem>
           <AddButton onAddCoinSlot={onAddCoinSlot} />
         </CoinsListItem>
     }
@@ -367,7 +367,6 @@ function App() {
       <div className="app-box">
         <h1>Cryptowidget Builder</h1>
         <div className="coin-list-container">
-          <AddButton onAddCoinSlot={onAddCoinSlot}/>
           <div className="coin-list">
             {coinList}
           </div>
