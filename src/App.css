@@ -1,25 +1,33 @@
 :root{
-  --coin-slot-container-width: 14.4em;
+  --coin-slot-container-width: 6em;
+  --coins-list-container-padding: 2em;
   --num-columns: 1;
+}
+
+.center{
+  margin: 0 auto;
 }
   
 .coin-slot{
   margin: 0 auto;
-  width: 12em;
-  aspect-ratio: 1 / 1;
+  aspect-ratio: 3 / 1;
   position: relative;
   display: flex;
   align-items: center;
+  padding: 0.5em;
+}
+
+.swap-button-container{
 }
 
 .bordered{
   border: 1px solid black;
+  height: 8em;
 }
 
 #add-button{
   margin: 0 auto;
   width:50%;
-  height:40%
 }
 
 .App {
@@ -61,11 +69,10 @@
 }
 
 .coin-list{
-  width: calc(var(--coin-slot-container-width) * var(--num-columns));
   margin: 0 auto;
-  display: grid;
-  grid-template-columns: repeat(var(--num-columns), var(--coin-slot-container-width));
-  gap: 0.25em;
+  padding: 2em;
+  display: flex;
+  flex-direction: column;
 }
 
 .logo-chooser{

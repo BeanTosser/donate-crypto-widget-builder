@@ -2,6 +2,7 @@
     --coin-slot-width: 12em;
     --coin-image-margin: 0.75em;
     --move-button-container-width: 1.5em;
+    --coin-slot-item-margin-percentage: 1%; 
 }
 
 @font-face {
@@ -9,18 +10,19 @@
     src: url('../../fonts/RobotoMono-VariableFont_wght.ttf') format('ttf');
 }
 
-.dropdown-menu{
-    width: 100%;
+.ticker-entry{
+    grid-area: t;
 }
 
-.coin-slot-grid{
+.coin-slot-inner-container{
     font-family: 'ROBOTO-MONO';
+    height: 100%;
     margin: 0 0;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    height: var(--coin-slot-width);
-    position: relative;
+    display: grid;
+    gap: 0.25em 0.25em;
+    grid-template: 
+        "r t t t t f f" 20%
+        "i i a a a a a" 80%;
 }
 
 .move-button-container{
@@ -28,18 +30,20 @@
 }
 
 .remove-button{
-    position: absolute;
-    top: 0.5em;
-    left: 0.5em;
+    grid-area: r;
+}
+
+.column{
+    display: flex;
+    flex-direction: column;
 }
 
 #background-image{
-    position: absolute;
+    grid-area: i;
+    object-fit: cover;
     width: 75%;
-    height: 75%;
-    transform: translateX(calc(6em - 50%));
-    opacity: 20%;
-    z-index: -10;
+    margin: 0 auto;
+    margin-top: 5%;
 }
 
 .change-coin-button-container{
@@ -52,12 +56,12 @@
     width: 60%;
     margin: 0 auto;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     justify-content: center;
 }
 
 .logo-chooser{
-    color: rgba(0,0,0,0);
+    grid-area: f;
 }
 
 .address-entry-container{
@@ -65,6 +69,10 @@
     flex-direction: column;
 }
 
+.address-entry{
+    grid-area: a;
+    height: 85%;
+}
 
 .closed{
     display: none;
@@ -142,4 +150,13 @@ span:before {
 
 .custom-ticker-entry{
     width: 94%;
+}
+
+.horizontal {
+    display: flex;
+    flex-direction: row;
+}
+.vertical {
+    display: flex;
+    flex-direction: column;
 }

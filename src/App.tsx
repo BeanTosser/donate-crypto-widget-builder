@@ -13,20 +13,21 @@ import ethImage from './img/ethereum-eth-logo.svg';
 import EMPTY_COIN_IMAGE from './img/empty-coin-logo.svg';
 import validator from "multicoin-address-validator";
 
-try{
-console.log("btc image source: " + btcImage);
-} catch(e) {
-  console.log("btcImage: " + btcImage);
-}
-const CSS_ROOT: HTMLElement = document.querySelector(':root');
+import {interleaveArrays} from "./utilities";
 
 type AddButtonProps = {
   onAddCoinSlot: () => void;
 }
 
+type SwapButtonProps = {
+  onSwapCoinSlots: (id: number) => void;
+  id: number;
+}
+
 type CoinsListItemProps = {
   children: React.ReactNode,
-  bordered?: boolean
+  bordered?: boolean,
+  swapButton?: boolean
 }
 
 const AddButton = function (props: AddButtonProps) {
@@ -37,10 +38,26 @@ const AddButton = function (props: AddButtonProps) {
   )
 }
 
+const SwapButton = function(props: SwapButtonProps){
+  return (
+    <>
+      <input 
+        type="button"
+        onClick={props.onSwapCoinSlots.bind(this, props.id)}
+        value="swap"
+        className="center"
+      >
+        
+      </input>
+    </>
+  )
+}
+
 const CoinsListItem = (props: CoinsListItemProps) => {
   let borderedClassName = props.bordered ? " bordered" : "";
+  let isSwapButtonClassName = props.swapButton ? " swap-button-container" : "";
   return(
-    <div className={"coin-slot" + borderedClassName}>
+    <div className={"coin-slot" + borderedClassName + " " + isSwapButtonClassName}>
       {props.children}
     </div>
   )
@@ -49,7 +66,6 @@ const CoinsListItem = (props: CoinsListItemProps) => {
 type CoinData = {
   address: string,
   ticker: string,
-  customTicker: string,
   addressIsValid: boolean,
   image: string,
   imageSource: string,
@@ -61,8 +77,7 @@ type CoinData = {
 function App() {
 
   useEffect(() => {
-    setNumColumns();
-  }, [])
+      }, [])
 
   const SUPPORTED_COIN_IMAGES = [
     btcImage,
@@ -80,7 +95,6 @@ function App() {
     {
       address: "Address",
       ticker: SUPPORTED_COINS[0],
-      customTicker: "",
       addressIsValid: false,
       image: SUPPORTED_COIN_IMAGES[0],
       imageSource: SUPPORTED_COIN_IMAGES[0],
@@ -92,18 +106,22 @@ function App() {
   let coinsDataCopy = [...coinsData];
   let availableCoinsCopy = [...availableCoins];
 
-  const moveCoinSlot = function(shouldMoveLeft: boolean, id: number){
-    let targetSlot = shouldMoveLeft ? id - 1 : id + 1;
-    if(targetSlot < coinsDataCopy.length && targetSlot > -1){
-      if(shouldMoveLeft){
-        coinsDataCopy = [...coinsDataCopy.slice(0, targetSlot), ...[coinsDataCopy[id]], ...[coinsDataCopy[targetSlot]], ...coinsDataCopy.slice(id+1, coinsDataCopy.length)];
-      } else { 
-        coinsDataCopy = [...coinsDataCopy.slice(0, id), ...[coinsDataCopy[targetSlot]], ...[coinsDataCopy[id]], ...coinsDataCopy.slice(targetSlot+1, coinsDataCopy.length)];
-      }
-      update();
-      return;
+  // swap the places of coinsDataCopy[id] and coinsDataCopy[id+1] in the coinsData array.
+  const moveCoinSlot = function(id: number){
+    let arrayHead = [] as CoinData[];
+    let arrayTail = [] as CoinData[];
+
+    if(id > 0){
+      arrayHead = coinsDataCopy.slice(0,id);
     }
-    console.log("coinsDataCopy not updated");
+    if(id < coinsDataCopy.length - 2){
+      arrayTail = coinsDataCopy.slice(id+2, coinsDataCopy.length);
+    }
+
+    coinsDataCopy = [...arrayHead, ...[coinsDataCopy[id + 1]], ...[coinsDataCopy[id]], ...arrayTail];
+    console.log("coinsDataCOpy after swap: " + coinsDataCopy.length);
+    update();
+    return;
   }
 
   const onChangeLogo = async function(id: number, event: React.ChangeEvent<HTMLInputElement>){
@@ -121,14 +139,9 @@ function App() {
 
   }
 
-  const onChangeTicker = function(id: number, ticker: string){
-    coinsDataCopy[id].customTicker = ticker;
-    update();
-  }
-
   const onGenerateQrs = function(){
     console.log("The addresses being sent to writeHtml: " + JSON.stringify(coinsData.map(coin => {return coin.address})));
-    generateQrs(coinsData.map(coin => {return coin.customTicker}), coinsData.map(coin => {return coin.address}), coinsData.map(coin => {return coin.imageSource}));
+    generateQrs(coinsData.map(coin => {return coin.ticker}), coinsData.map(coin => {return coin.address}), coinsData.map(coin => {return coin.imageSource}));
   }
 
   const onToggleAddressEntry = function(id: number){
@@ -174,35 +187,26 @@ function App() {
     let oldCoinRank = coinsDataCopy[id].rank;
     let newCoinRank: number;
 
-    if(coin === "custom"){
-      newCoinRank = -1;
-    } else {
-      newCoinRank = SUPPORTED_COINS.indexOf(coin);
-    }
-
+    // Check to see if the coin is supported out-of-the-box
+    newCoinRank = SUPPORTED_COINS.indexOf(coin);
     //First, remove the NEW coin from availableCoins (if not custom)
-
     if(newCoinRank !== -1){
+      //First make sure the coin isn't already in the widget. Duplicates are not allowed
       availableCoinsCopy.splice(availableCoins.indexOf(newCoinRank), 1);
-    } else {
-    }
+    } 
 
     makeCoinAvailable(oldCoinRank);
 
     // replace the old coin with the new in the coin slot
     if(newCoinRank !== -1){
-      coinsDataCopy[id].ticker = SUPPORTED_COINS[newCoinRank];
-      coinsDataCopy[id].customTicker = SUPPORTED_COINS[newCoinRank];
+      coinsDataCopy[id].ticker = coin;
       coinsDataCopy[id].addressIsValid = false;
       coinsDataCopy[id].image = SUPPORTED_COIN_IMAGES[newCoinRank];
-      //availableCoinsCopy[availableCoinsCopy.indexOf(newCoinRank)] = oldCoinRank;
     } else {
       newCoinRank = -1;
-      coinsDataCopy[id].ticker = "custom";
-      coinsDataCopy[id].customTicker = "TKR";
+      coinsDataCopy[id].ticker = coin;
       coinsDataCopy[id].addressIsValid = true;
       coinsDataCopy[id].image = EMPTY_COIN_IMAGE_ELEMENT.props.src;
-      //availableCoinsCopy = [...[oldCoinRank], ...availableCoinsCopy];
     }
     coinsDataCopy[id].imageSource = coinsDataCopy[id].image;
 
@@ -218,7 +222,6 @@ function App() {
       let numLines = Math.trunc(address.length / ADDRESS_LINE_CHARS) + (address.length % ADDRESS_LINE_CHARS === 0 ? 0 : 1);
       coinsDataCopy[id].address = address;
       coinsDataCopy[id].lines = numLines;
-      console.log("Setting coin address for coin " + coinsDataCopy[id].customTicker + " to " + address);
       if(coinsDataCopy[id].rank === -1){
         coinsDataCopy[id].addressIsValid = true;
       } else {
@@ -243,8 +246,7 @@ function App() {
   const onRemoveCoinSlot = function(id: number){
     makeCoinAvailable(coinsDataCopy[id].rank);
     coinsDataCopy.splice(id, 1);
-    setNumColumns();
-    update();
+        update();
   }
 
   const onAddCoinSlot = function(){
@@ -274,7 +276,6 @@ function App() {
       {
         address: "Address",
         ticker: newTicker,
-        customTicker: newTicker,
         addressIsValid: coinRank === -1 ? true : false,
         image: newImage,
         imageSource: newImage,
@@ -283,29 +284,15 @@ function App() {
       } as CoinData
     )
 
-    setNumColumns();
-
     console.log("image source for the newly-added coin: " + coinsDataCopy[coinsDataCopy.length - 1].imageSource);
 
     update();
-  }
-  const setNumColumns = function() {
-    //adjust number of columns is needed - subtract 1 to leave room for the add button
-    if(coinsDataCopy.length < SUPPORTED_COINS.length - 1){
-      CSS_ROOT.style.setProperty("--num-columns", (coinsDataCopy.length + 1).toString());
-      console.log("Setting number of columns to: " + (coinsDataCopy.length + 1).toString())
-    } else {
-      CSS_ROOT.style.setProperty("--num-columns", SUPPORTED_COINS.length.toString());
-      console.log("Setting number of columns to: " + (coinsDataCopy.length + 1).toString())
-    }
-
-    console.log("There should now be " + CSS_ROOT.style.getPropertyValue("--num-columns"));
   }
 
   const makeAllAddressesValid = function() {
     coinsDataCopy.forEach((coin, index) => {
       if(coin.rank !== -1){
-        onChangeAddress(index, COIN_TEST_ADDRESSES[SUPPORTED_COINS.indexOf(coin.ticker)], coin.customTicker);
+        onChangeAddress(index, COIN_TEST_ADDRESSES[SUPPORTED_COINS.indexOf(coin.ticker)], coin.ticker);
         coin.addressIsValid = true;
       }
     })
@@ -318,21 +305,16 @@ function App() {
     setAvailableCoins(availableCoinsCopy);
     console.log("spooky: The addresses at update: " + coinsData.map(coin => {return coin.address}));
   }
-
-  let coinsDataWithAddButton: CoinData[] | null;
   
   //Add a blank coin slot; this will hold the "add" button
-  coinsDataWithAddButton = [...coinsData, null];
-
-  let coinList = coinsDataWithAddButton.map((coin, index) => {
+  let coinList = coinsData.map((coin, index) => {
+    console.log("Attempting to map coin with index: " + index);
     let listItem: JSX.Element;
-    if(coin !== null){
       listItem = 
         <CoinsListItem bordered={true}>
           <CoinSlot 
             id={index}
             coinTicker={coin.ticker}
-            addressEntryIsOpen={coin.addressEntryIsOpen}
             availableCoins={availableCoins}
             coinImage={coin.image}
             address={coin.address}
@@ -341,23 +323,25 @@ function App() {
             onChangeCoin={onChangeCoin}
             onChangeAddress={onChangeAddress}
             onChangeLogo={onChangeLogo}
-            onChangeTicker={onChangeTicker}
             onRemoveCoinSlot={onRemoveCoinSlot}
             toggleAddressEntryArea={onToggleAddressEntry}
             moveCoinSlot={moveCoinSlot}
             lines={coin.lines}
           />
         </CoinsListItem>
-    } else {
-      listItem =
-        <CoinsListItem>
-          <AddButton onAddCoinSlot={onAddCoinSlot} />
-        </CoinsListItem>
-    }
     return listItem;
   })
 
-  console.log("spooky: The addresses at render: " + coinsData.map(coin => {return coin.address}));
+  //Add in the switch buttons
+  let swapButtonElements = ([...new Array(coinsDataCopy.length - 1)] as JSX.Element[]).map((element, index) => {return( 
+    <CoinsListItem swapButton = {true}>
+      <SwapButton id={index} onSwapCoinSlots={moveCoinSlot.bind(this, index)}/>
+    </CoinsListItem>
+  )})
+  if(swapButtonElements.length > 0){
+    coinList = interleaveArrays(coinList, swapButtonElements);
+  }
+  coinList = [...coinList, <CoinsListItem><AddButton onAddCoinSlot={onAddCoinSlot} /></CoinsListItem>];
 
   return (
 

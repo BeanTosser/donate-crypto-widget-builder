@@ -1,0 +1,23 @@
+
+:root{
+    --coin-size: 3.9em;
+    --widget-width: 17em;
+}
+.coin-logo-alternate{
+    position: relative;
+    margin: 0 auto;
+    width: var(--coin-size);
+}
+
+.coin-chooser-alternative{
+    width: var(--widget-width);
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;   
+}
+
+.coin-arrow-alternative{
+    z-index: 2;
+}
