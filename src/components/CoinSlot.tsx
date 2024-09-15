@@ -111,11 +111,13 @@ if(props.isCustom){
                 onChange={onChangeLogo} 
                 disabled={fileInputIsDisabled}
             />
-            <img
-                src={props.coinImage}
-                id="background-image"
-                alt="coin">
-            </img>
+            <div className="coin-image-container">
+                <img
+                    src={props.coinImage}
+                    id="background-image"
+                    alt="coin">
+                </img>
+            </div>
             {addressEntryElement}
         </div>
     )

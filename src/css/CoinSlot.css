@@ -10,41 +10,62 @@
     src: url('../../fonts/RobotoMono-VariableFont_wght.ttf') format('ttf');
 }
 
-.ticker-entry{
-    grid-area: t;
-}
-
 .coin-slot-inner-container{
+    position: relative;
+    width: var(--coin-slot-container-width);
     font-family: 'ROBOTO-MONO';
     height: 100%;
     margin: 0 0;
     display: grid;
     gap: 0.25em 0.25em;
     grid-template: 
-        "r t t t t f f" 20%
-        "i i a a a a a" 80%;
+        "i i i t t t t t"
+        "i i i a a a a a"
+        "i i i a a a a a"
+        "i i i a a a a a"
+        "f f f a a a a a";
+    grid-template-rows: repeat(5, 17.5%);
+    grid-template-columns: repeat(8, 11.5%);
 }
 
 .move-button-container{
     width: 20%;
 }
 
-.remove-button{
-    grid-area: r;
+.coin-image-container{
+    grid-area: i;
+    padding: 5%;
 }
+
+.remove-button{
+    position: absolute;
+}
+
+.ticker-entry{
+    grid-area: t;
+}
+
+#background-image{
+    max-height: 100%;
+    width: auto;
+    margin: 0 auto;
+}
+
+.logo-chooser{
+    grid-area: f;
+    width: 100%;
+}
+
+.address-entry{
+    grid-area: a;
+}
+
 
 .column{
     display: flex;
     flex-direction: column;
 }
 
-#background-image{
-    grid-area: i;
-    object-fit: cover;
-    width: 75%;
-    margin: 0 auto;
-    margin-top: 5%;
-}
 
 .change-coin-button-container{
     display: flex;
@@ -60,18 +81,9 @@
     justify-content: center;
 }
 
-.logo-chooser{
-    grid-area: f;
-}
-
 .address-entry-container{
     display: flex;
     flex-direction: column;
-}
-
-.address-entry{
-    grid-area: a;
-    height: 85%;
 }
 
 .closed{

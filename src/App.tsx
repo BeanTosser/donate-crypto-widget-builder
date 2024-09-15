@@ -46,16 +46,14 @@ const SwapButton = function(props: SwapButtonProps){
         onClick={props.onSwapCoinSlots.bind(this, props.id)}
         value="swap"
         className="center"
-      >
-        
-      </input>
+      ></input>
     </>
   )
 }
 
 const CoinsListItem = (props: CoinsListItemProps) => {
   let borderedClassName = props.bordered ? " bordered" : "";
-  let isSwapButtonClassName = props.swapButton ? " swap-button-container" : "";
+  let isSwapButtonClassName = props.swapButton ? " coin-slot-button" : "";
   return(
     <div className={"coin-slot" + borderedClassName + " " + isSwapButtonClassName}>
       {props.children}
@@ -341,7 +339,7 @@ function App() {
   if(swapButtonElements.length > 0){
     coinList = interleaveArrays(coinList, swapButtonElements);
   }
-  coinList = [...coinList, <CoinsListItem><AddButton onAddCoinSlot={onAddCoinSlot} /></CoinsListItem>];
+  coinList = [...coinList, <CoinsListItem swapButton={true}><AddButton onAddCoinSlot={onAddCoinSlot} /></CoinsListItem>];
 
   return (
 

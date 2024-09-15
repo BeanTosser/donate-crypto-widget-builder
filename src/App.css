@@ -1,5 +1,5 @@
 :root{
-  --coin-slot-container-width: 6em;
+  --coin-slot-container-width: 22em;
   --coins-list-container-padding: 2em;
   --num-columns: 1;
 }
@@ -10,14 +10,16 @@
   
 .coin-slot{
   margin: 0 auto;
-  aspect-ratio: 3 / 1;
+  aspect-ratio: 4 / 1;
+  width: var(--coin-slot-container-width);
   position: relative;
   display: flex;
   align-items: center;
   padding: 0.5em;
 }
 
-.swap-button-container{
+.coin-slot-button {
+  height: 2em;
 }
 
 .bordered{
@@ -75,6 +77,3 @@
   flex-direction: column;
 }
 
-.logo-chooser{
-  width:75%;
-}
