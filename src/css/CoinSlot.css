@@ -1,7 +1,7 @@
 :root{
-    --coin-slot-width: 12em;
-    --coin-image-margin: 0.75em;
-    --move-button-container-width: 1.5em;
+    --coin-slot-width: 10rem;
+    --coin-image-margin: 0.66rem;
+    --move-button-container-width: 1.3rem;
     --coin-slot-item-margin-percentage: 1%; 
 }
 
@@ -12,20 +12,18 @@
 
 .coin-slot-inner-container{
     position: relative;
-    width: var(--coin-slot-container-width);
     font-family: 'ROBOTO-MONO';
     height: 100%;
     margin: 0 0;
     display: grid;
-    gap: 0.25em 0.25em;
+    gap: 0.6% 0.6%;
     grid-template: 
         "i i i t t t t t"
         "i i i a a a a a"
         "i i i a a a a a"
-        "i i i a a a a a"
         "f f f a a a a a";
-    grid-template-rows: repeat(5, 17.5%);
-    grid-template-columns: repeat(8, 11.5%);
+    grid-template-rows: repeat(4, calc(25% - 0.6% + (0.6% / 4.0)));
+    grid-template-columns: repeat(8, calc(12.5% - 0.6% + (0.6% / 8.0)));
 }
 
 .move-button-container{
@@ -54,6 +52,14 @@
 .logo-chooser{
     grid-area: f;
     width: 100%;
+}
+
+.logo-chooser::after{
+    z-index: -5;
+    width: 40%;
+    height: 100%;
+    transform: translateX(40%);
+    background-color: red;
 }
 
 .address-entry{
@@ -152,7 +158,7 @@ span{
     padding: 8px 8px 4px 8px;
     border: 1px solid #708090;
     display: inline-block;
-    width: 15em;
+    width: 12rem;
 }
 
 span:before {

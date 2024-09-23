@@ -15,8 +15,41 @@ type coinInstruction = {
     address: string
 }
 
-export default async function WriteHtml(tickers: string[], addresses: string[], imageSources: string[]){
+/*
+const base64String = 'your_base64_string';
+const byteCharacters = atob(base64String);
+const byteArray = new Uint8Array(byteCharacters.length);
+for (let i = 0; i < byteCharacters.length; i++) {
+  byteArray[i] = byteCharacters.charCodeAt(i);
+}
+const blob = new Blob([byteArray], { type: 'application/octet-stream' });
+*/
+async function asyncToBlob(canvas: HTMLCanvasElement){
+    return new Promise(resolve => {
+        console.log("pasty: asyncToBlob");
+        canvas.toBlob(response => {console.log("pasty: resolving response"); resolve(response)});
+    })
+}
 
+async function getImageDataUrl(url: string): Promise<string> {
+    const img = new Image();
+    return new Promise(resolve => {
+        img.onload = async () => {
+            console.log("Pasty: The image loaded");
+            const canvas = document.createElement('canvas');
+            canvas.width = img.width;
+            canvas.height = img.height;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0);
+
+            resolve(canvas.toDataURL("image/png"));
+        };
+        img.src = url;
+    })
+  }
+
+export default async function WriteHtml(tickers: string[], addresses: string[], imageSources: string[]){
+    console.log("Tickers: " + JSON.stringify(tickers));
     var zip = new JSZip();
     zip.folder('/src/img');
     zip.folder('/src/css');
@@ -33,36 +66,46 @@ export default async function WriteHtml(tickers: string[], addresses: string[], 
     // ...
     // [tickern],[addressn];
 
-    tickers.forEach(async (ticker, index) => {
-        console.log("Looping through tickers; now on " + ticker);
-        // get the image file path
-        let filePath = "/src/img/" + ticker + "ButtonLogo.png";
-        let imageData = imageSources[index];
-        console.log("The image source for " + ticker + "is: " + imageData);
-        let binaryImageData: Blob;
-        try{
-            binaryImageData = dataURItoBlob(imageData);
-        } catch(e){
-            console.log("dataUriToBlob failed because: " + e);
-        }
-        zip.file(filePath, binaryImageData, {binary: true});
-console.log("The addresses passed into writehtml: " + JSON.stringify(addresses))
-        let address = addresses[index] || "";
-        console.log("addresses[index]: " + addresses[index]);
-        console.log("The new address is: " + address);
-        console.log("The breakpoint");
-        //QRCode
-        let qr = qrcode(0, 'M');
-        if(address){
+    async function loopTickers(){
+        let index = 0;
+        for(const ticker of tickers) {
+            console.log("Looping through tickers; now on " + ticker);
+            // get the image file path
+            let filePath = "/src/img/" + ticker + "ButtonLogo.png";
+            let imageData = imageSources[index];
+            console.log("test: The image source for " + ticker + "is: " + imageData);
+            console.log("test: the dataURI for the image is: " + await getImageDataUrl(imageData));
+            let binaryImageData: Blob= (dataURItoBlob(await getImageDataUrl(imageData)));
+    
+            console.log("test: The binary image data: " + JSON.stringify(binaryImageData));
+            zip.file(filePath, binaryImageData, {binary: true});
+            let address = addresses[index] || "";
+    
+            //QRCode
+            let qr = qrcode(0, 'M');
             qr.addData(address);
             qr.make();
             let qrURL = qr.createDataURL(6);
+            console.log("The QR url: " + qrURL);
             let qrBinary = dataURItoBlob(qrURL);
             zip.file("/src/img/qr" + index.toString() + ".png", qrBinary, {binary: true});
+            console.log("testy: the qr: " + JSON.stringify(zip.file("/src/img/qr" + index.toString() + ".png")));
+            instructions.push({address: address, ticker: ticker})
+            if(index === tickers.length - 1){
+                console.log("spop: Finished looping tickers");
+            }
+            index++;
         }
-        instructions.push({address: address, ticker: ticker})
-    })
-    console.log("Supposedly done looping tickers");
+        console.log("spop: tickers are definitely done looping now");
+    }
+
+    await loopTickers();
+
+    console.log("spop - should only run after finished looping tickers");
+
+    let testFile = zip.file("/src/img/btcButtonLogo.png");
+    console.log("testy: " + JSON.stringify(testFile));
+
     let instructionsString = JSON.stringify({instructions});
     //instructionsString = instructionsString.substring(instructionsString.indexOf("["), instructionsString.indexOf("]") + 1);
     instructionsString = instructionsString.replace('{"instructions":', "let instructions = ");
@@ -78,6 +121,7 @@ console.log("The addresses passed into writehtml: " + JSON.stringify(addresses))
     console.log("SUccessfully created newIndexJs")
     newIndexJs = instructionsString.concat("\n", newIndexJs);
     zip.file("/src/index.js", newIndexJs);
+    console.log("test: one of the text files: " + JSON.stringify(zip.file("/src/index.js")));
     zip.generateAsync({type: 'blob'}).then(function(content) {
         filesaver.saveAs(content, "cryptoWidget");
     })

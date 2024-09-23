@@ -66,15 +66,6 @@ module.exports = {
             },
         },
         {
-          test: /\.svg$/,
-          loader: 'svg-inline-loader'
-        },
-        {
-          test: /\.svg$/i, 
-          issuer: /\.[jt]sx?$/,
-          use: ['@svgr/webpack'],
-        },
-        {
           test: /\.ttf$/i, 
           type: 'asset/resource'
         },

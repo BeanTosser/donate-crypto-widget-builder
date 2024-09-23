@@ -1,5 +1,5 @@
 import React from "react";
-import {SUPPORTED_COINS, ADDRESS_LINE_CHARS} from "../constants";
+import {ADDRESS_LINE_CHARS} from "../constants";
 import "../css/CoinSlot.css";
 import "../index.css";
 

@@ -1,7 +1,7 @@
 :root{
-  --coin-slot-container-width: 22em;
-  --coins-list-container-padding: 2em;
-  --num-columns: 1;
+  --coin-slot-container-width: 20rem;
+  --coin-slot-container-height: 4rem;
+  --coins-list-container-padding: 1.6rem;
 }
 
 .center{
@@ -10,21 +10,21 @@
   
 .coin-slot{
   margin: 0 auto;
-  aspect-ratio: 4 / 1;
-  width: var(--coin-slot-container-width);
+  height: var(--coin-slot-container-height);
+  aspect-ratio: 3 / 1;
   position: relative;
   display: flex;
   align-items: center;
-  padding: 0.5em;
+  padding: 0.4rem;
 }
 
 .coin-slot-button {
-  height: 2em;
+  height: 1.8rem;
 }
 
 .bordered{
   border: 1px solid black;
-  height: 8em;
+  height: 6.75rem;
 }
 
 #add-button{
@@ -39,10 +39,10 @@
 .app-box{
   width: fit-content;
   border: 1px solid rgb(0, 0, 0);
-  max-width: 73em;
+  max-width: 65rem;
   margin: 0 auto;
-  padding-left: 1.5em;
-  padding-right: 1.5em;
+  padding-left: 1.2rem;
+  padding-right: 1.2rem;
 }
 
 .App-header {
@@ -52,7 +52,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
+  font-size: 2.5em;
   color: white;
 }
 
@@ -62,7 +62,7 @@
 
 .coin-list-container{
   width: fit-content;
-  max-width: 73em;
+  max-width: 66rem;
   margin: 0 auto;
 }
 
@@ -72,7 +72,7 @@
 
 .coin-list{
   margin: 0 auto;
-  padding: 2em;
+  padding: 1.75rem;
   display: flex;
   flex-direction: column;
 }

@@ -15,6 +15,8 @@ import validator from "multicoin-address-validator";
 
 import {interleaveArrays} from "./utilities";
 
+console.log("The imported SVG image data: " + btcImage);
+
 type AddButtonProps = {
   onAddCoinSlot: () => void;
 }
