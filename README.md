@@ -1,70 +1,53 @@
-# Getting Started with Create React App
+#Cryptocurrency donation widget tool
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+##Overview
 
-## Available Scripts
+This is a browser-based tool for building a multi-currency donation widget for web pages. It supports a handful of tokens out-of-the-box, and it also allows manually adding unsupported tokens. 
 
-In the project directory, you can run:
+##Supported currencies
 
-### `npm start`
+* Bitcoin
+* Ethereum
+* Monero
+* Doge
+* USDC
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+##Usage
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+These instructions are provided for completeness only, as the tool is designed to be intuitive and self-explanatory.
 
-### `npm test`
+###Adding a new token
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Click the "+" button at the bottom of the token list to add a new cryptocurrency.
 
-### `npm run build`
+###Removing a token
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Click the "x" button at the top left of the token slot you want to remove.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+###Changing a token
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Click in the "ticker" text field in the top right of the coin slot you want to change and type in the ticker for the token you want to switch to.
 
-### `npm run eject`
+###Changing a token's address
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+Click in the "address" field, located below the "ticker" field, and type in the public address of the destination wallet.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+###Uploading a token logo (for unsupported tokens only)
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+Click the "choose file" button in the bottom-left corner of the coin slot and select an image file.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+###Exporting a widget
 
-## Learn More
+Click the "Get widget" button at the bottom of the application to download a .zip file of the wiget you created.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+##Incorporating a widget into an existing website
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+This application exports a .zip file containing all of the components for a standalone web page containing only a donation widget.  To incorporate the widget into your own web page:
 
-### Code Splitting
+1. Extract the contents of the .zip file into any arbitray location on your computer
+2. Copy the contents of the "src" folder to the the same directory as the .html file you want the widget to appear in. If you aleady have folders named "img" or "css" at this location, you will be asked whether you want to merge or overwrite the folders. Choose the option to merge them. **Furthermore, if you already have any files matching the names of any files in the donation widget directory (donationWidget.html, for instance), you will have to rename them and change any references to them within your existing .html and .js files accordingly**
+3. Copy the following HTML snippet:
+`<iframe src="./donationWidget.html" frameborder="0"></iframe>`
+and paste it where you want it to appear within your .html file document.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
 
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)

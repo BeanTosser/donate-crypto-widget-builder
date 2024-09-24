@@ -49,13 +49,12 @@ async function getImageDataUrl(url: string): Promise<string> {
   }
 
 export default async function WriteHtml(tickers: string[], addresses: string[], imageSources: string[]){
-    console.log("Tickers: " + JSON.stringify(tickers));
     var zip = new JSZip();
     zip.folder('/src/img');
     zip.folder('/src/css');
 
-    zip.file('/src/css/main.css', mainCss);
-    zip.file('/src/index.html', indexHtml);
+    zip.file('/src/css/donationWidget.css', mainCss);
+    zip.file('/src/donationWidget.html', indexHtml);
 
     let instructions: coinInstruction[] = [] as coinInstruction[];
 
@@ -69,15 +68,11 @@ export default async function WriteHtml(tickers: string[], addresses: string[], 
     async function loopTickers(){
         let index = 0;
         for(const ticker of tickers) {
-            console.log("Looping through tickers; now on " + ticker);
             // get the image file path
             let filePath = "/src/img/" + ticker + "ButtonLogo.png";
             let imageData = imageSources[index];
-            console.log("test: The image source for " + ticker + "is: " + imageData);
-            console.log("test: the dataURI for the image is: " + await getImageDataUrl(imageData));
             let binaryImageData: Blob= (dataURItoBlob(await getImageDataUrl(imageData)));
     
-            console.log("test: The binary image data: " + JSON.stringify(binaryImageData));
             zip.file(filePath, binaryImageData, {binary: true});
             let address = addresses[index] || "";
     
@@ -89,22 +84,12 @@ export default async function WriteHtml(tickers: string[], addresses: string[], 
             console.log("The QR url: " + qrURL);
             let qrBinary = dataURItoBlob(qrURL);
             zip.file("/src/img/qr" + index.toString() + ".png", qrBinary, {binary: true});
-            console.log("testy: the qr: " + JSON.stringify(zip.file("/src/img/qr" + index.toString() + ".png")));
             instructions.push({address: address, ticker: ticker})
-            if(index === tickers.length - 1){
-                console.log("spop: Finished looping tickers");
-            }
             index++;
         }
-        console.log("spop: tickers are definitely done looping now");
     }
 
     await loopTickers();
-
-    console.log("spop - should only run after finished looping tickers");
-
-    let testFile = zip.file("/src/img/btcButtonLogo.png");
-    console.log("testy: " + JSON.stringify(testFile));
 
     let instructionsString = JSON.stringify({instructions});
     //instructionsString = instructionsString.substring(instructionsString.indexOf("["), instructionsString.indexOf("]") + 1);
@@ -118,10 +103,8 @@ export default async function WriteHtml(tickers: string[], addresses: string[], 
     } catch(e){
         console.log("found the failing length line. Reason for failure: " + e)
     }
-    console.log("SUccessfully created newIndexJs")
     newIndexJs = instructionsString.concat("\n", newIndexJs);
-    zip.file("/src/index.js", newIndexJs);
-    console.log("test: one of the text files: " + JSON.stringify(zip.file("/src/index.js")));
+    zip.file("/src/donationWidget.js", newIndexJs);
     zip.generateAsync({type: 'blob'}).then(function(content) {
         filesaver.saveAs(content, "cryptoWidget");
     })

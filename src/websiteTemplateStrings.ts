@@ -1,8 +1,8 @@
 const indexHtml = `<!DOCTYPE html>
 <html>
     <head>
-        <link rel="stylesheet" href="./css/main.css" />
-        <script type="text/javascript" src="./index.js"></script>
+        <link rel="stylesheet" href="./css/donationWidget.css" />
+        <script type="text/javascript" src="./donationWidget.js"></script>
     </head>
     <body onload="initialize()">
         <div class="test-thing">
