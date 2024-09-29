@@ -343,13 +343,36 @@ function App() {
   }
   coinList = [...coinList, <CoinsListItem swapButton={true}><AddButton onAddCoinSlot={onAddCoinSlot} /></CoinsListItem>];
 
+  const openHelpModal = function(){
+    let modal = document.getElementById("help-modal") as HTMLDialogElement;
+    modal.showModal();
+  }
+
   return (
 
     <div className="App">
+      <dialog id="help-modal">
+        <div id="help-modal-inner-div">
+          This application exports a .zip file containing all of the components necessary for a standalone web page containing only a donation widget.  To incorporate the widget into your own web page:
+          <ol>
+            <li>Extract the contents of the .zip file into any arbitray location on your computer</li>
+            <li>Copy the contents of the "src" folder to the the same directory as the .html file you want the widget to appear in. If you aleady have folders named "img" or "css" at this location, you will be asked whether you want to merge or overwrite the folders. Choose the option to merge them. Furthermore, if you already have any files matching the names of any files in the donation widget directory (donationWidget.html, for instance), you will have to rename them and change any references to them within your existing .html and .js files accordingly</li>
+            <li>
+              Copy the following HTML snippet:
+              <code>&lt;iframe src="./donationWidget.html" frameborder="0"&rt;&lt;/iframe&rt;</code>
+              and paste it where you want your widget to appear within your .html file document.
+            </li>
+          </ol>
+          <button onClick={() => {
+          (document.getElementById("help-modal") as HTMLDialogElement).close();
+          }}>X</button>
+        </div>
+      </dialog>
       <div className="debug">
       </div>
       <div className="app-box">
-        <h1>Cryptowidget Builder</h1>
+      <button onClick={openHelpModal}>Help!</button>
+        <h1>Multi-crypto donation widget builder</h1>
         <div className="coin-list-container">
           <div className="coin-list">
             {coinList}

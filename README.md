@@ -2,6 +2,10 @@
 
 ##Overview
 
+Various tools for incorporating cryptocurrency donation widgets into existing websites can be found scattered across github and the internet at large, but each of these solutions applies to only a single token. In order to accept donations in more than one currency, a web developer needs to either resort to either creating their own widget from scratch or adding individual, mismatching widgets for each currency they want to accept.
+
+This tool provides an all-in-one solution, allowing potential donors to choose a donation currency from a list of multiple currencies, all contained within a single widget.
+
 This is a browser-based tool for building a multi-currency donation widget for web pages. It supports a handful of tokens out-of-the-box, and it also allows manually adding unsupported tokens. 
 
 ##Supported currencies
@@ -13,8 +17,6 @@ This is a browser-based tool for building a multi-currency donation widget for w
 * USDC
 
 ##Usage
-
-These instructions are provided for completeness only, as the tool is designed to be intuitive and self-explanatory.
 
 ###Adding a new token
 
@@ -42,7 +44,7 @@ Click the "Get widget" button at the bottom of the application to download a .zi
 
 ##Incorporating a widget into an existing website
 
-This application exports a .zip file containing all of the components for a standalone web page containing only a donation widget.  To incorporate the widget into your own web page:
+This application exports a .zip file containing all of the components necessary for a standalone web page containing only a donation widget.  To incorporate the widget into your own web page:
 
 1. Extract the contents of the .zip file into any arbitray location on your computer
 2. Copy the contents of the "src" folder to the the same directory as the .html file you want the widget to appear in. If you aleady have folders named "img" or "css" at this location, you will be asked whether you want to merge or overwrite the folders. Choose the option to merge them. **Furthermore, if you already have any files matching the names of any files in the donation widget directory (donationWidget.html, for instance), you will have to rename them and change any references to them within your existing .html and .js files accordingly**
