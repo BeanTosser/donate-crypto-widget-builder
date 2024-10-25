@@ -13,7 +13,11 @@ import ethImage from './img/ethereum-eth-logo.svg';
 import EMPTY_COIN_IMAGE from './img/empty-coin-logo.svg';
 import validator from "multicoin-address-validator";
 
+import CryptoDonationWidget from "./components/CryptoDonationWidget";
+
 import {interleaveArrays} from "./utilities";
+
+console.log("btcImage: " + btcImage);
 
 console.log("The imported SVG image data: " + btcImage);
 
@@ -380,6 +384,13 @@ function App() {
         </div>
         <button onClick={onGenerateQrs} value="Get widget" disabled={generationIsDisabled}>Get widget</button>
         <button onClick={makeAllAddressesValid} value="Make addresses valid (for testing)">Make Addresses Valid</button>
+      </div>
+      <div>
+          <CryptoDonationWidget 
+            addresses={["lasfjoialjsefliajse;lfiajsleifsiejf", "ethAddy", "address2", "btcAddy"]}
+            images = {[]}
+            tickers={["ticker1", "eth", "ticker2", "btc"]}
+          />
       </div>
     </div>
   );

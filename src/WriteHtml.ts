@@ -3,6 +3,7 @@ import dataURItoBlob from './base64-to-binary';
 import {indexHtml, indexJs, mainCss} from './websiteTemplateStrings';
 //@ts-ignore
 import indexJsRaw from './template/index.txt?raw';
+import {stringToQrImage, dataURIToBlob} from './utilities';
 import qrcode from 'qrcode-generator';
 /* eslint import/no-webpack-loader-syntax: off */
 //import css from './template/css/main.css?raw'
@@ -24,12 +25,6 @@ for (let i = 0; i < byteCharacters.length; i++) {
 }
 const blob = new Blob([byteArray], { type: 'application/octet-stream' });
 */
-async function asyncToBlob(canvas: HTMLCanvasElement){
-    return new Promise(resolve => {
-        console.log("pasty: asyncToBlob");
-        canvas.toBlob(response => {console.log("pasty: resolving response"); resolve(response)});
-    })
-}
 
 async function getImageDataUrl(url: string): Promise<string> {
     const img = new Image();
@@ -71,18 +66,13 @@ export default async function WriteHtml(tickers: string[], addresses: string[], 
             // get the image file path
             let filePath = "/src/img/" + ticker + "ButtonLogo.png";
             let imageData = imageSources[index];
-            let binaryImageData: Blob= (dataURItoBlob(await getImageDataUrl(imageData)));
+            let binaryImageData: Blob = (dataURItoBlob(await getImageDataUrl(imageData)));
     
             zip.file(filePath, binaryImageData, {binary: true});
             let address = addresses[index] || "";
     
             //QRCode
-            let qr = qrcode(0, 'M');
-            qr.addData(address);
-            qr.make();
-            let qrURL = qr.createDataURL(6);
-            console.log("The QR url: " + qrURL);
-            let qrBinary = dataURItoBlob(qrURL);
+            let qrBinary = dataURIToBlob(stringToQrImage(address));
             zip.file("/src/img/qr" + index.toString() + ".png", qrBinary, {binary: true});
             instructions.push({address: address, ticker: ticker})
             index++;

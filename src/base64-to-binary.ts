@@ -1,6 +1,6 @@
 // OBTAINED FROM: https://gist.github.com/suuuzi/06a3b0b6741e6a90d83548aa8ac9666a
 // Thanks to suuuzi
-const dataURItoBlob = function(dataURI: string) {
+export function dataURIToBlob(dataURI: string) {
     // convert base64/URLEncoded data component to raw binary data held in a string
     var byteString;
     if (dataURI.split(',')[0].indexOf('base64') >= 0)
