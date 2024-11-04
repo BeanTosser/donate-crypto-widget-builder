@@ -64,6 +64,11 @@
     transform: translateY(1em);
     z-index: 2;
 }
+
+.disabled{
+    border-left-color: #e4e4e4;
+    border-right-color: #e4e4e4;
+}
 .change-coin-arrow:hover{
     cursor: pointer;
 }

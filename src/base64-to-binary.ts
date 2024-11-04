@@ -21,4 +21,4 @@ export function dataURIToBlob(dataURI: string) {
 
 }
 
-export default dataURItoBlob;
+export default dataURIToBlob;

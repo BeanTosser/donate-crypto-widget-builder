@@ -387,9 +387,9 @@ function App() {
       </div>
       <div>
           <CryptoDonationWidget 
-            addresses={["lasfjoialjsefliajse;lfiajsleifsiejf", "ethAddy", "address2", "btcAddy"]}
-            images = {[]}
-            tickers={["ticker1", "eth", "ticker2", "btc"]}
+            addresses={coinsData.map(coin => coin.address)}
+            images = {coinsData.map(coin => coin.imageSource)}
+            tickers={coinsData.map(coin => coin.ticker)}
           />
       </div>
     </div>
