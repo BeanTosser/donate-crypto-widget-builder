@@ -352,6 +352,20 @@ function App() {
     modal.showModal();
   }
 
+  //get lists of the tickers, coin images, and addresses for the preview widget
+  const previewTickers: string[] = [];
+  const previewImages: string[] = [];
+  const previewAddresses: string[] = [];
+
+  coinsData.forEach(coin => {
+    //Only add the image if this is a custom coin with a custom image
+    if(coin.rank === -1){
+      previewImages.push(coin.image);
+    }
+    previewTickers.push(coin.ticker);
+    previewAddresses.push(coin.address);
+  })
+
   return (
 
     <div className="App">
@@ -387,9 +401,9 @@ function App() {
       </div>
       <div>
       <CryptoDonationWidget 
-            addresses={["btcAddress", "customAddress", "ethAddress"]}
-            images = {[EMPTY_COIN_IMAGE]}
-            tickers={['btc', 'cust', 'eth']}
+            addresses={previewAddresses}
+            images = {previewImages}
+            tickers={previewTickers}
       />
       </div>
     </div>
