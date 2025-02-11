@@ -33,17 +33,6 @@ module.exports = {
             loader: "raw-loader"
           }
         },
-        /*{
-          //test: /\.test$/i,
-          //type: 'raw-loader',
-        //},
-        {
-          test: /\.html$/i,
-          loader: "html-loader",
-          exclude: [
-            '/src/template/'
-          ]
-        },*/
         {
             test: /\.(?:ts|tsx)$/,
             exclude: ['/node_modules/', '/src/template/'],
@@ -51,20 +40,7 @@ module.exports = {
                 loader: 'babel-loader'
             }
         },
-        {
-            test: /\.(jpg|png|svg)$/,
-            loader: 'url-loader',
-            options: {
-              limit: 25000,
-            },
-        },
-        {
-            test: /\.(jpg|png)$/,
-            loader: 'file-loader',
-            options: {
-              name: '[path][name].[hash].[ext]',
-            },
-        },
+
         {
           test: /\.ttf$/i, 
           type: 'asset/resource'

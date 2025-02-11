@@ -9,3 +9,4 @@ declare module "*?raw";
 declare module "*.css";
 declare module "*.test";
 declare module "*.ttf";
+declare module "donate-crypto-widget-react";

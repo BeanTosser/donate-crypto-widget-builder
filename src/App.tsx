@@ -13,7 +13,7 @@ import ethImage from './img/ethereum-eth-logo.svg';
 import EMPTY_COIN_IMAGE from './img/empty-coin-logo.svg';
 import validator from "multicoin-address-validator";
 
-import CryptoDonationWidget from "./components/CryptoDonationWidget";
+import CryptoDonationWidget from "donate-crypto-widget-react";
 
 import {interleaveArrays} from "./utilities";
 
@@ -359,11 +359,11 @@ function App() {
         <div id="help-modal-inner-div">
           This application exports a .zip file containing all of the components necessary for a standalone web page containing only a donation widget.  To incorporate the widget into your own web page:
           <ol>
-            <li>Extract the contents of the .zip file into any arbitray location on your computer</li>
-            <li>Copy the contents of the "src" folder to the the same directory as the .html file you want the widget to appear in. If you aleady have folders named "img" or "css" at this location, you will be asked whether you want to merge or overwrite the folders. Choose the option to merge them. Furthermore, if you already have any files matching the names of any files in the donation widget directory (donationWidget.html, for instance), you will have to rename them and change any references to them within your existing .html and .js files accordingly</li>
+            <li>Extract the contents of the .zip file</li>
+            <li>Copy the contents of the "src" folder to the the same directory as the .html file you want the widget to appear in. If you aleady have folders named "img" or "css" at this location, you will be asked whether you want to merge or overwrite the folders. Choose the option to merge them. <br />If your site's "src" directory already contains files with names that matchthose of any files in the donation widget directory (donationWidget.html, for instance), you must rename them and change any references to them within your existing .html and .js files accordingly</li>
             <li>
-              Copy the following HTML snippet:
-              <code>&lt;iframe src="./donationWidget.html" frameborder="0"&rt;&lt;/iframe&rt;</code>
+              Copy the following HTML snippet:<br /><br />
+              <code>&lt;iframe src="./donationWidget.html" frameborder="0"&rt;&lt;/iframe&rt;</code><br /> <br />
               and paste it where you want your widget to appear within your .html file document.
             </li>
           </ol>
@@ -386,11 +386,11 @@ function App() {
         <button onClick={makeAllAddressesValid} value="Make addresses valid (for testing)">Make Addresses Valid</button>
       </div>
       <div>
-          <CryptoDonationWidget 
-            addresses={coinsData.map(coin => coin.address)}
-            images = {coinsData.map(coin => coin.imageSource)}
-            tickers={coinsData.map(coin => coin.ticker)}
-          />
+      <CryptoDonationWidget 
+            addresses={["btcAddress", "customAddress", "ethAddress"]}
+            images = {[EMPTY_COIN_IMAGE]}
+            tickers={['btc', 'cust', 'eth']}
+      />
       </div>
     </div>
   );
